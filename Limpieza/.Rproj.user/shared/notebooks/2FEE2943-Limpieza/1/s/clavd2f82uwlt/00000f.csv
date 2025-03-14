@@ -1,0 +1,4 @@
+"0","ent_2018 <- ent_2018%>%"
+"0","  rename(Monto = `sum(Monto)`, Proporcion = `sum(Proporcion)`)"
+"0",""
+"0","reactable(ent_2018)"

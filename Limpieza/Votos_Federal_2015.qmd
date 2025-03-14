@@ -1,0 +1,147 @@
+---
+title: "Proceso Electoral 2015"
+css: custom.css
+---
+
+## Proceso Electoral 2015:
+
+```{r}
+library(tidyverse)
+library(readxl)
+library(reactable)
+options(scipen=999)
+options(digits=2)
+```
+
+```{r}
+dipfed2015 <- read_excel("C:/Users/Eduardo/Documents/PC/SECCION1/DOCS/Tesis/FEDERAL/diputaciones 2015+.xlsx")
+reactable(dipfed2015)
+```
+
+```{r}
+dipfed2015 <- dipfed2015%>%
+select(-NUM_VOTOS_CAN_NREG,-OBSERVACIONES)
+```
+
+### Manipulación de Datos:
+
+```{r}
+dipfed2015 <- dipfed2015 %>%
+gather(key = Partido, value= Votos, PAN:CAND_IND22)
+```
+
+```{r}
+reactable(dipfed2015)
+```
+
+### Agrupaciones:
+
+```{r}
+dipfed2015_1 <- dipfed2015%>%
+  group_by(ID_ESTADO, NOMBRE_ESTADO, Partido)%>%
+  reframe(Votos = sum(Votos),
+         PARTICIPACION = sum(PARTICIPACION),
+         LISTA_NOMINAL = sum(LISTA_NOMINAL),
+         TOTAL_VOTOS = sum(TOTAL_VOTOS),
+         NUM_VOTOS_NULOS = sum(NUM_VOTOS_NULOS))%>%
+  arrange((ID_ESTADO))
+
+reactable(dipfed2015_1)
+```
+
+```{r}
+dipfed2015_1 <- dipfed2015_1[!is.na(dipfed2015_1$Votos),]
+```
+
+```{r}
+suma_F2015 <- dipfed2015_1%>%
+            group_by(ID_ESTADO, NOMBRE_ESTADO)%>%
+            reframe(Votos1 = sum(Votos))
+
+suma_F2015
+```
+
+### Uniones:
+
+```{r}
+dipfed2015_1_f <- dipfed2015_1 %>%
+    select(-PARTICIPACION,-LISTA_NOMINAL,-TOTAL_VOTOS,-NUM_VOTOS_NULOS)%>%
+    left_join(suma_F2015, by = c("ID_ESTADO", "NOMBRE_ESTADO"))
+```
+
+```{r}
+dipfed2015_1_f <- dipfed2015_1_f%>%
+    mutate(Proporcion= (Votos/Votos1)*(100))
+
+reactable(dipfed2015_1_f)
+```
+
+### Manipulación de Variables:
+
+```{r}
+dipfed2015_1_f <- dipfed2015_1_f%>%
+mutate(Partido = ifelse(Partido == "PH", "Otro", Partido))%>%
+mutate(Partido = ifelse(Partido == "NVA_ALIANZA", "NUAL", Partido))%>%
+mutate(Partido = ifelse(Partido == "ES", "PES", Partido))
+```
+
+### Agrupaciones:
+
+```{r}
+dipfed2015_2_f  <- dipfed2015_1_f%>%
+group_by(Partido)%>%
+reframe(sum(Votos),
+          sum(Proporcion/32))
+```
+
+```{r}
+dipfed2015_2_f <- dipfed2015_2_f%>%
+rename(Votos = `sum(Votos)`, 
+      Proporcion = `sum(Proporcion/32)`)
+```
+
+```{r}
+dipfed2015_2_f  <- dipfed2015_1_f%>%
+group_by(Partido)%>%
+reframe(sum(Votos),
+          sum(Proporcion/32))
+
+reactable(dipfed2015_2_f)
+```
+
+```{r}
+integrantes2015 <- read_excel ("C:/Users/Eduardo/Documents/PC/SECCION1/DOCS/Tesis/Integrantes/diputados_federales.xlsx")
+reactable(integrantes2015)
+```
+
+```{r}
+integrantes2015 <- integrantes2015%>%
+filter(Año == 2015)
+
+reactable(integrantes2015)
+```
+
+```{r}
+reactable(integrantes2015)
+```
+
+```{r}
+integrantes2015 <-  integrantes2015%>%  
+mutate(Partido = ifelse(Partido == "IND" | Partido == "SP", "Otro", Partido))
+```
+
+### Uniones:
+
+```{r}
+dipfed2015_1_f1 <- dipfed2015_2_f%>%
+inner_join(integrantes2015, by= "Partido")  
+```
+
+### Presentación:
+
+```{r}
+dipfed2015_1_f1 <- dipfed2015_1_f1%>%
+gather(key = Sexo, value= Curules, Hombres:Mujeres)
+
+reactable(dipfed2015_1_f1)
+```

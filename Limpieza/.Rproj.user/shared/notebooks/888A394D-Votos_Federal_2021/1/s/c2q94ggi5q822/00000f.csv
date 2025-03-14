@@ -1,0 +1,4 @@
+"0","dipfed2021_2_f <- dipfed2021_2_f%>%"
+"0","rename(Votos = `sum(Votos)`, "
+"0","      Proporcion = `sum(Proporcion/32)`)"
+"0","dipfed2021_2_f"

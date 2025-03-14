@@ -1,0 +1,8 @@
+"0","ggplotly(ggplot(data = GP_2018_f) +"
+"0","  geom_bar(mapping = aes(x = Partido, y = Monto, fill = Partido), "
+"0","           position = ""dodge"", stat = ""identity"") +"
+"0","  labs(x = ""Partido"", "
+"0","       y = ""Monto en Millones de Pesos"", "
+"0","       title = ""Gasto por Concepto de Salarios en los Congresos Locales en México"","
+"0","       subtitle = ""2018"","
+"0","       caption = ""Fuente: INEGI, 2018""))"

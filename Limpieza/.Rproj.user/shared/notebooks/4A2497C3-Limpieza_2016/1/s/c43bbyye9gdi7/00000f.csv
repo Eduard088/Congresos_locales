@@ -1,0 +1,5 @@
+"0","ent_2016 <- ingresos_2016_f%>%"
+"0","  group_by(entidad)%>%"
+"0","  reframe(sum(Monto), sum(Proporcion))"
+"0",""
+"0","reactable(ent_2016)"

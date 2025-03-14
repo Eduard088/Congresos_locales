@@ -1,0 +1,2 @@
+"0","dipfed2018_2_f <- dipfed2018_2_f%>%"
+"0","mutate(Partido = ifelse(Partido == ""PVEM"", ""Otro"", Partido))"

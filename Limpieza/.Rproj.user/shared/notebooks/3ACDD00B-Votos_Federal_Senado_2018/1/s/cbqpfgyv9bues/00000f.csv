@@ -1,0 +1,5 @@
+"0","senfed2018_2_f <- senfed2018_2_f%>%"
+"0","rename(Votos = `sum(Votos)`, "
+"0","      Proporcion = `sum(Proporcion/32)`)"
+"0",""
+"0","reactable(senfed2018_2_f)"

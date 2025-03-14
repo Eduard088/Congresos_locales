@@ -1,0 +1,2 @@
+"0","integantes_senado_1 <- integantes_senado_1%>%"
+"0","mutate(Partido = ifelse(Partido == ""SG"", ""Otro"", Partido))"

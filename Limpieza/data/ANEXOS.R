@@ -1,0 +1,189 @@
+##
+ggplot(financiamiento, aes(x = Año, y = Financiamiento, group = Partido, color = Partido))+
+  geom_smooth(method = "loess", se = FALSE, size = 0.8) +
+  scale_color_manual(values = c(
+    "MC" = "orange",
+    "MORENA" = "darkred",
+    "NUAL" = "skyblue",
+    "Otro" = "gray50",
+    "PAN" = "blue",
+    "PES" = "navy",
+    "PRD" = "yellow",
+    "PRI" = "green",
+    "PT" = "red",
+    "PVEM" = "lightgreen",
+    "ES" = "pink3",
+    "FMX" = "brown",
+    "PH" = "gray",
+    "RSP" = "gray2"
+  ))+
+  labs(title = "Financiamiento Público para el Mantenimiento de la Partitocracia Mexicana",
+       subtitle="Entre 2014 al 2022",
+       x = "Año",
+       y = "Monto",
+       color = "Partido",
+       linetype = "Partido",
+       caption="Elaboración Propia con Datos del INE") +
+  scale_x_continuous(breaks = seq(2014, 2023, by=1))+
+  theme_minimal() +
+  theme(
+    plot.title = element_text(face = "bold", hjust = 0.5, color = "#34495E", size = 12),
+    plot.subtitle = element_text(hjust = 0.5, color = "#7F8C8D"),
+    plot.caption = element_text(size = 10, hjust = 1, color = "#95A5A6"),
+    axis.title.x = element_text(face = "bold", color = "#2C3E50", size = 12),
+    axis.title.y = element_text(face = "bold", color = "#2C3E50", size = 12),
+    axis.text = element_text(color = "#34495E"),
+    panel.grid.major = element_line(color = "#D0D3D4", size = 0.5),
+    panel.grid.minor = element_blank()
+  )
+
+
+ggplot(financiamiento, aes(x = factor(Año), y = Monto, fill = Partido)) +
+  geom_bar(stat = "identity", position = "dodge") +  # Añade stat = "identity" y position = "dodge"
+  labs(
+    title = "Financiamiento Público para el Mantenimiento de la Partitocracia Mexicana",
+    subtitle = "Entre 2014 al 2022",
+    x = "Año",
+    y = "Monto",
+    fill = "Partido",  # Cambia color a fill
+    caption = "Elaboración Propia con Datos del INE"
+  ) +
+  scale_fill_manual(values = c(
+    "MC" = "orange",
+    "MORENA" = "darkred",
+    "NUAL" = "skyblue",
+    "Otro" = "gray50",
+    "PAN" = "blue",
+    "PES" = "navy",
+    "PRD" = "yellow",
+    "PRI" = "green",
+    "PT" = "red",
+    "PVEM" = "lightgreen",
+    "ES" = "pink3",
+    "FMX" = "brown",
+    "PH" = "gray",
+    "RSP" = "gray2"
+  ))+
+  coord_cartesian()+
+  coord_flip()+
+  facet_wrap(~Categoria) +
+  theme_minimal() +
+  theme(
+    plot.title = element_text(face = "bold", hjust = 0.5, color = "#34495E", size = 12),
+    plot.subtitle = element_text(hjust = 0.5, color = "#7F8C8D"),
+    plot.caption = element_text(size = 10, hjust = 1, color = "#95A5A6"),
+    axis.title.x = element_text(face = "bold", color = "#2C3E50", size = 12),
+    axis.title.y = element_text(face = "bold", color = "#2C3E50", size = 12),
+    axis.text = element_text(color = "#34495E"),
+    panel.grid.major = element_line(color = "#D0D3D4", size = 0.5),
+    panel.grid.minor = element_blank()
+  )
+
+
+ggplot(financiamiento, aes(x = Concepto, y = Monto, fill = Partido)) +
+  geom_bar(stat = "identity", position = "fill") +  # Añade stat = "identity" y position = "dodge"
+  labs(
+    title = "Financiamiento Público para el Mantenimiento de la Partitocracia Mexicana",
+    subtitle = "Según la Categoría Entre 2014 al 2022",
+    x = "Concepto",
+    y = "Porcentaje",
+    fill = "Partido",  # Cambia color a fill
+    caption = "Elaboración Propia con Datos del INE"
+  ) +
+  scale_fill_manual(values = c(
+    "MC" = "orange",
+    "MORENA" = "darkred",
+    "NUAL" = "skyblue",
+    "Otro" = "gray50",
+    "PAN" = "blue",
+    "PES" = "navy",
+    "PRD" = "yellow",
+    "PRI" = "green",
+    "PT" = "red",
+    "PVEM" = "lightgreen",
+    "ES" = "pink3",
+    "FMX" = "brown",
+    "PH" = "gray",
+    "RSP" = "gray2"
+  ))+
+  coord_cartesian()+
+  coord_flip()+
+  theme_minimal() +
+  theme(
+    plot.title = element_text(face = "bold", hjust = 0.5, color = "#34495E", size = 12),
+    plot.subtitle = element_text(hjust = 0.5, color = "#7F8C8D"),
+    plot.caption = element_text(size = 10, hjust = 1, color = "#95A5A6"),
+    axis.title.x = element_text(face = "bold", color = "#2C3E50", size = 12),
+    axis.title.y = element_text(face = "bold", color = "#2C3E50", size = 12),
+    axis.text = element_text(color = "#34495E"),
+    panel.grid.major = element_line(color = "#D0D3D4", size = 0.5),
+    panel.grid.minor = element_blank()
+  )
+
+
+ggplot(financiamiento, aes(x = Partido, y = Monto, fill = Concepto)) +
+  geom_bar(stat = "identity", position = "dodge") +  # Añade stat = "identity" y position = "dodge"
+  labs(
+    title = "Financiamiento Público para el Mantenimiento de la Partitocracia Mexicana",
+    subtitle = "Según la Categoría Entre 2014 al 2022",
+    x = "Partido",
+    y = "Monto",
+    fill = NULL,  # Cambia color a fill
+    caption = "Elaboración Propia con Datos del INE"
+  ) +
+  coord_cartesian()+
+  theme_minimal() +
+  theme(
+    plot.title = element_text(face = "bold", hjust = 0.5, color = "#34495E", size = 12),
+    plot.subtitle = element_text(hjust = 0.5, color = "#7F8C8D"),
+    plot.caption = element_text(size = 10, hjust = 1, color = "#95A5A6"),
+    axis.title.x = element_text(face = "bold", color = "#2C3E50", size = 12),
+    axis.title.y = element_text(face = "bold", color = "#2C3E50", size = 12),
+    axis.text = element_text(color = "#34495E"),
+    panel.grid.major = element_line(color = "#D0D3D4", size = 0.5),
+    panel.grid.minor = element_blank(),
+    legend.position = "bottom"
+  )+
+  guides(fill = guide_legend(nrow = 2))
+
+
+
+
+# Crear el tibble con los datos del gráfico
+data11 <- tibble(
+  Proceso_Electoral = c(2006, 2009, 2012, 2015, 2018, 2021),
+  Hombres = c(380, 350, 330, 310, 290, 250),
+  Mujeres = c(120, 150, 170, 190, 210, 250)
+)
+
+# Generar el gráfico con ggplot2
+ggplot(data11, aes(x = Proceso_Electoral)) +
+  geom_line(aes(y = Hombres, color = "Hombres"), size = 1) +
+  geom_line(aes(y = Mujeres, color = "Mujeres"), size = 1) +
+  geom_area(aes(y = Hombres, fill = "Hombres"), alpha = 0.4, show.legend = FALSE) + 
+  geom_area(aes(y = Mujeres, fill = "Mujeres"), alpha = 0.4, show.legend = FALSE) +
+  geom_point(aes(y=Hombres), size=2)+
+  geom_point(aes(y=Mujeres), size=2)+
+  labs(
+    title = "Evolución de la Ocupación de Curules en la Cámara de Diputados",
+    subtitle="LX - LXIV Legislatura",
+    x = "Año Electoral",
+    y = "Curules por Sexo",
+    color = "Legislatura"
+  ) +
+  scale_x_continuous(breaks =seq(2006, 2021, by=3))+
+  scale_y_continuous(breaks = seq(0, 380, by=40))+
+  scale_color_manual(values = c("Hombres" = "lightblue", "Mujeres" = "purple")) +
+  scale_fill_manual(values = c("Hombres" = "lightblue", "Mujeres" = "purple")) +
+  theme_minimal() +
+  theme(
+    plot.title = element_text(face = "bold", hjust = 0.5, color = "#34495E", size = 12),
+    plot.subtitle = element_text(hjust = 0.5, color = "#7F8C8D"),
+    plot.caption = element_text(size = 10, hjust = 1, color = "#95A5A6"),
+    axis.title.x = element_text(face = "bold", color = "#2C3E50", size = 12),
+    axis.title.y = element_text(face = "bold", color = "#2C3E50", size = 12),
+    axis.text = element_text(color = "#34495E"),
+    panel.grid.major = element_line(color = "#D0D3D4", size = 0.5),
+    panel.grid.minor = element_blank(),
+    legend.position = "bottom"
+  )

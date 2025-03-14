@@ -1,0 +1,1 @@
+"0","ingresos_2018 <- ingresos_2018[!is.na(ingresos_2018$Casos),]"

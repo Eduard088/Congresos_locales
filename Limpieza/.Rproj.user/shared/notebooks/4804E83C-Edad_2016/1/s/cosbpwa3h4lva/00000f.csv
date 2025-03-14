@@ -1,0 +1,5 @@
+"0","edades_GP_2016 <- edades_2016%>%"
+"0","  group_by(Partido, Rango_Edad, Edad_estimada)%>%"
+"0","  reframe(Casos = sum(Casos))"
+"0",""
+"0","reactable(edades_GP_2016)"

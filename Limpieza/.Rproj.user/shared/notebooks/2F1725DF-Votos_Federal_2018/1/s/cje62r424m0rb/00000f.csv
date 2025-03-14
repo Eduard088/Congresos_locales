@@ -1,0 +1,4 @@
+"0","dipfed2018_2_f  <- dipfed2018_1_f%>%"
+"0","group_by(Partido)%>%"
+"0","reframe(sum(Votos),"
+"0","          sum(Proporcion/32))"

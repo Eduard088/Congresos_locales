@@ -1,0 +1,7 @@
+"0","edades_2020 <- edades_2020 %>%"
+"0","  filter(puebindi_b != 0)"
+"0",""
+"0","edades_2020 <- edades_2020 %>%"
+"0","  filter(condisca_b != 0)"
+"0",""
+"0","reactable(edades_2020)"

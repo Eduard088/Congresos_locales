@@ -1,0 +1,4 @@
+"0","dipfed2015_1_f <- dipfed2015_1_f%>%"
+"0","    mutate(Proporcion= (Votos/Votos1)*(100))"
+"0",""
+"0","reactable(dipfed2015_1_f)"

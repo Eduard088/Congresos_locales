@@ -1,0 +1,3 @@
+"0","edades_2019 <- edades_2019%>%"
+"0","  rename(Origen= puebindi_b, Discapacidad= condisca_b, Entidad= entidad_a)"
+"0","reactable(edades_2019)"

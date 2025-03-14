@@ -1,0 +1,4 @@
+"0","estudios_2023_1 <- estudios_2023_1%>%"
+"0","  left_join(lista_2, by=""Clasificacion"")"
+"0",""
+"0","reactable(estudios_2023_1)"

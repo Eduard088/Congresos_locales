@@ -1,0 +1,140 @@
+---
+title: "Random Forest"
+css: custom.css
+---
+
+```{r}
+library(tidyverse)
+library(readxl)
+library(plotly)
+library(reactable)
+```
+
+El Método de Monte Carlo se basa en la **repetición de experimentos aleatorios** y el análisis de los resultados para estimar soluciones. Por ejemplo, para calcular la probabilidad de un evento, se pueden simular múltiples escenarios, observar los resultados y calcular las proporciones observadas.
+
+#### Principales Componentes:
+
+1.  **Generación de Números Aleatorios:**\
+    Los experimentos Monte Carlo dependen de la generación de números aleatorios distribuidos de acuerdo con una distribución específica (uniforme, normal, etc.).
+
+2.  **Repetición de Simulaciones:**\
+    Se realizan un gran número de simulaciones para minimizar la incertidumbre en los resultados.
+
+3.  **Agregación de Resultados:**\
+    Los resultados de las simulaciones se combinan para proporcionar una estimación estadística de la solución.
+
+    ### Aplicaciones del Método de Monte Carlo
+
+    1.  **Estadística:**\
+        Estimación de intervalos de confianza, pruebas de hipótesis y generación de datos sintéticos.
+
+    2.  **Finanzas:**\
+        Valoración de opciones financieras, análisis de riesgo y simulación de precios de activos.
+
+    3.  **Física y Química:**\
+        Simulación de sistemas moleculares, cálculo de integrales en mecánica cuántica.
+
+    4.  **Optimización:**\
+        Resolución de problemas complejos de optimización en ingeniería y ciencias computacionales.
+
+    5.  **Ciencia de Datos:**\
+        Entrenamiento de modelos bayesianos y evaluación de algoritmos en contextos inciertos.
+
+### Ejemplo en R: Estimación de π\piπ
+
+Uno de los ejemplos clásicos del Método de Monte Carlo es la estimación del valor de π\piπ simulando puntos dentro de un cuadrado y evaluando cuántos de ellos caen dentro de un círculo inscrito.
+
+#### Paso 1: Simulación Básica
+
+```{r}
+n_sim <- 10000
+
+set.seed(123)
+x <- runif(n_sim, -1, 1)
+y <- runif(n_sim, -1, 1)
+
+distancia <- sqrt(x^2 + y^2)
+
+dentro_circulo <- distancia <= 1
+
+pi_estimado <- (sum(dentro_circulo) / n_sim) * 4
+print(paste("Estimación de Pi:", pi_estimado))
+```
+
+#### Paso 2: Visualización con ggplot2
+
+```{r}
+datosMC <- tibble(
+  x = x,
+  y = y,
+  dentro_circulo = ifelse(dentro_circulo, "Dentro", "Fuera")
+)
+
+ggplot(datosMC, aes(x = x, y = y, color = dentro_circulo)) +
+  geom_point(alpha = 0.5) +
+  scale_color_manual(values = c("Dentro" = "blue", "Fuera" = "red")) +
+  labs(
+    title = "Estimación de Pi utilizando Monte Carlo",
+    x = "Coordenada X",
+    y = "Coordenada Y",
+    color = "Estado"
+  ) +
+      theme_minimal()+
+    theme(
+    plot.title = element_text(face = "bold", hjust = 0.5, color = "#34495E", size = 12),
+    plot.subtitle = element_text(hjust = 0.5, color = "#7F8C8D"),
+    plot.caption = element_text(size = 10, hjust = 1, color = "#95A5A6"),
+    axis.title.x = element_text(face = "bold", color = "#2C3E50", size = 12),
+    axis.title.y = element_text(face = "bold", color = "#2C3E50", size = 12),
+    axis.text = element_text(color = "#34495E"),
+    panel.grid.major = element_line(color = "#D0D3D4", linewidth = 0.5),
+    panel.grid.minor = element_blank()
+  )
+```
+
+```{r}
+ggplotly(
+  ggplot(datosMC, aes(x = x, y = y, color = dentro_circulo)) +
+  geom_point(alpha = 0.5) +
+  scale_color_manual(values = c("Dentro" = "blue", "Fuera" = "red")) +
+  labs(
+    title = "Estimación de Pi utilizando Monte Carlo",
+    x = "Coordenada X",
+    y = "Coordenada Y",
+    color = "Estado"
+  ) +
+      theme_minimal()+
+    theme(
+    plot.title = element_text(face = "bold", hjust = 0.5, color = "#34495E", size = 12),
+    plot.subtitle = element_text(hjust = 0.5, color = "#7F8C8D"),
+    plot.caption = element_text(size = 10, hjust = 1, color = "#95A5A6"),
+    axis.title.x = element_text(face = "bold", color = "#2C3E50", size = 12),
+    axis.title.y = element_text(face = "bold", color = "#2C3E50", size = 12),
+    axis.text = element_text(color = "#34495E"),
+    panel.grid.major = element_line(color = "#D0D3D4", linewidth = 0.5),
+    panel.grid.minor = element_blank()
+  )
+)
+```
+
+### Ventajas del Método de Monte Carlo
+
+1.  **Versatilidad:**\
+    Puede aplicarse a una amplia gama de problemas en diversos campos.
+
+2.  **Escalabilidad:**\
+    Funciona bien con modelos complejos o de alta dimensionalidad.
+
+3.  **Aproximación Probabilística:**\
+    Permite modelar incertidumbres y variabilidad en los sistemas.
+
+### Desventajas del Método de Monte Carlo
+
+1.  **Costoso Computacionalmente:**\
+    Puede requerir una cantidad significativa de tiempo y recursos para grandes simulaciones.
+
+2.  **Precisión Dependiente del Número de Simulaciones:**\
+    La precisión mejora con más simulaciones, pero esto aumenta el costo computacional.
+
+3.  **Calidad de los Números Aleatorios:**\
+    Resultados sensibles a la calidad del generador de números aleatorios.

@@ -1,0 +1,4 @@
+"0","senfed2018 <- senfed2018%>%"
+"0","rename(NUAL = 'NA')"
+"0",""
+"0","reactable(senfed2018)"

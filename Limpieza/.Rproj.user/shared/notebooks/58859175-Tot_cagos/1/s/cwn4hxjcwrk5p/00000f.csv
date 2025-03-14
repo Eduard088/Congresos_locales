@@ -1,0 +1,6 @@
+"0","Cargo_1 <- Cargos%>%"
+"0","  group_by(Año, Sexo, CARGO)%>%"
+"0","  reframe(Casos=n())%>%"
+"0","  mutate(Proporcion = Casos/sum(Casos))"
+"0",""
+"0","reactable(Cargo_1)"

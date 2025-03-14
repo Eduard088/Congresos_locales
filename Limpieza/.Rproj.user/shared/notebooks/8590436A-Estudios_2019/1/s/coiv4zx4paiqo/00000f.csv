@@ -1,0 +1,9 @@
+"0","estudios_2019 <- read_csv(""C:/Users/Eduardo/Documents/PC/SECCION1/DOCS/Tesis/Estudios/estudios_2018.csv"")"
+"2","[1mRows: [22m[34m416[39m [1mColumns: [22m[34m19[39m"
+"2","[36m──[39m [1mColumn specification[22m [36m───────────────────────────────────────────────────────────────────────────────[39m
+[1mDelimiter:[22m "",""
+[32mdbl[39m (19): entidad, grupopar, legesctt, legesc1, legesc2, legesc3, legesc4, legesc5, legesc6, legesc..."
+"2","
+[36mℹ[39m Use `spec()` to retrieve the full column specification for this data.
+[36mℹ[39m Specify the column types or set `show_col_types = FALSE` to quiet this message."
+"0","reactable(estudios_2019)"

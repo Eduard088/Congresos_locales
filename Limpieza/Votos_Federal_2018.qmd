@@ -1,0 +1,152 @@
+---
+title: "Proceso Electoral 2018"
+css: custom.css
+---
+
+## Proceso Electoral 2018:
+
+```{r}
+library(tidyverse)
+library(readxl)
+library(reactable)
+options(scipen=999)
+options(digits=2)
+```
+
+```{r}
+dipfed2018 <- read_excel("C:/Users/Eduardo/Documents/PC/SECCION1/DOCS/Tesis/FEDERAL/diputaciones 2018.xlsx")
+reactable(dipfed2018)
+```
+
+```{r}
+dipfed2018 <- dipfed2018%>%
+select(-ID_DISTRITO, -CABECERA_DISTRITAL, -NUM_VOTOS_CAN_NREG,-SECCIONES, -CASILLAS,-JUICIO, -TRIBUNAL,-OBSERVACIONES, -RUTA_ACTA)
+```
+
+### Manipulación de Datos:
+
+```{r}
+dipfed2018 <- dipfed2018%>%
+gather(key = Partido, value = Votos, PAN:CAND_IND38)
+
+reactable(dipfed2018)
+```
+
+### Agrupaciones:
+
+```{r}
+dipfed2018_1 <- dipfed2018%>%
+  group_by(ID_ESTADO, NOMBRE_ESTADO, Partido)%>%
+  reframe(Votos = sum(Votos),
+         LISTA_NOMINAL = sum(LISTA_NOMINAL),
+         TOTAL_VOTOS = sum(TOTAL_VOTOS),
+         NUM_VOTOS_NULOS = sum(NUM_VOTOS_NULOS))%>%
+  arrange((ID_ESTADO))
+
+reactable(dipfed2018_1)
+```
+
+```{r}
+dipfed2018_1 <- dipfed2018_1[!is.na(dipfed2018_1$Votos),]
+```
+
+```{r}
+reactable(dipfed2018_1)
+```
+
+```{r}
+suma_F2018 <- dipfed2018_1%>%
+            group_by(ID_ESTADO, NOMBRE_ESTADO)%>%
+            reframe(Votos1 = sum(Votos))
+
+reactable(suma_F2018)
+```
+
+### Uniones:
+
+```{r}
+dipfed2018_1_f <- dipfed2018_1 %>%
+    left_join(suma_F2018, by = c("ID_ESTADO", "NOMBRE_ESTADO"))
+```
+
+```{r}
+reactable(dipfed2018_1_f)
+```
+
+```{r}
+dipfed2018_1_f <- dipfed2018_1_f%>%
+    mutate(Proporcion= (Votos/Votos1)*(100))
+
+reactable(dipfed2018_1_f)
+```
+
+```{r}
+dipfed2018_1_f <- dipfed2018_1_f%>%
+mutate(Partido = ifelse(Partido == "NA", "NUAL", Partido))%>%
+mutate(Partido = ifelse(Partido == "ES", "PES", Partido))
+```
+
+```{r}
+dipfed2018_2_f  <- dipfed2018_1_f%>%
+group_by(Partido)%>%
+reframe(sum(Votos),
+          sum(Proporcion/32))
+```
+
+```{r}
+reactable(dipfed2018_2_f)
+```
+
+```{r}
+dipfed2018_2_f <- dipfed2018_2_f%>%
+rename(Votos = `sum(Votos)`, 
+      Proporcion = `sum(Proporcion/32)`)
+```
+
+```{r}
+dipfed2018_2_f <- dipfed2018_2_f%>%
+mutate(Partido = ifelse(Partido == "PVEM", "Otro", Partido))
+```
+
+```{r}
+reactable(dipfed2018_2_f)
+```
+
+```{r}
+integrantes2018 <- read_excel ("C:/Users/Eduardo/Documents/PC/SECCION1/DOCS/Tesis/Integrantes/diputados_federales.xlsx")
+reactable(integrantes2018)
+```
+
+```{r}
+integrantes2018 <- integrantes2018%>%
+filter(Año == 2018)
+
+reactable(integrantes2018)
+```
+
+```{r}
+integrantes2018 <- integrantes2018 %>%
+  mutate(Partido = ifelse(Partido %in% c("SP", "NUAL", "CONV", "ALT", "IND", "PVEM"), "Otro", Partido))
+```
+
+```{r}
+reactable(integrantes2018)
+```
+
+### Uniones:
+
+```{r}
+dipfed2018_1_f1 <- dipfed2018_2_f%>%
+inner_join(integrantes2018, by= "Partido") 
+
+reactable(dipfed2018_1_f1)
+```
+
+### Presentación del Tibble:
+
+```{r}
+dipfed2018_1_f1 <- dipfed2018_1_f1%>%
+gather(key = Sexo, value = Curules, Hombres:Mujeres)
+
+reactable(dipfed2018_1_f1)
+```

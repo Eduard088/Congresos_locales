@@ -1,0 +1,234 @@
+---
+title: "Proceso Electoral 2019"
+css: custom.css
+---
+
+## Proceso Electoral 2019:
+
+```{r}
+library(tidyverse)
+library(readxl)
+library(reactable)
+options(scipen=999)
+options(digits=2)
+```
+
+```{r}
+Congreso_local_2019 <- read_excel("C:/Users/Marcial/Desktop/DOCS/Tesis/BASE 2020.xlsx")
+reactable(Congreso_local_2019)
+```
+
+```{r}
+Congreso_local_2019_f <- Congreso_local_2019%>%
+filter(Año == 2019)%>%
+rename(NUAL = 'NA')
+```
+
+```{r}
+head(Congreso_local_2019_f)
+```
+
+### Manipulación de Datos:
+
+```{r}
+Congreso_local_2019_f <- Congreso_local_2019_f%>%
+gather(key = Partido, value=Votos, PAN:CAND_IND3)
+```
+
+```{r}
+Congreso_local_2019_f <- Congreso_local_2019_f[!is.na(Congreso_local_2019_f$Votos),]
+```
+
+```{r}
+reactable(Congreso_local_2019_f)
+```
+
+### Agrupaciones:
+
+```{r}
+Congreso_local_2019_f <- Congreso_local_2019_f%>%
+  group_by(ID_ESTADO, NOMBRE_ESTADO, Partido)%>%
+  reframe(Votos = sum(Votos))%>%
+  arrange((ID_ESTADO))
+
+reactable(Congreso_local_2019_f)
+```
+
+```{r}
+suma_2020 <- Congreso_local_2019_f%>%
+            group_by(ID_ESTADO, NOMBRE_ESTADO)%>%
+            reframe(Votos1 = sum(Votos))
+
+reactable(suma_2020)
+```
+
+### Uniones:
+
+```{r}
+Congreso_local_2019_f <- Congreso_local_2019_f %>%
+    left_join(suma_2020, by = c("ID_ESTADO", "NOMBRE_ESTADO"))
+```
+
+```{r}
+Congreso_local_2019_f <- Congreso_local_2019_f%>%
+    mutate(Proporcion= (Votos/Votos1)*(100))
+
+reactable(Congreso_local_2019_f)
+```
+
+```{r}
+integrantes2019 <- read_excel("C:/Users/Marcial/Desktop/DOCS/Tesis/Integrantes/integrante2020.xlsx")
+reactable(integrantes2019)
+```
+
+### Manupulación de Datos:
+
+```{r}
+integrantes2019 <- integrantes2019%>%
+gather(key = Sexo, value= Curules, Hombres:Mujeres)
+
+reactable(integrantes2019)
+```
+
+```{r}
+integrantes2019 <- integrantes2019%>%
+  replace_na(list(Curules = 0))
+```
+
+```{r}
+integrantes2019 <- integrantes2019%>%
+  filter(Curules != 0)
+```
+
+### Uniones:
+
+```{r}
+Congreso_local_2019_f <- Congreso_local_2019_f%>%
+    inner_join(integrantes2019, by = c("ID_ESTADO", "Partido"))
+
+reactable(Congreso_local_2019_f)
+```
+
+### Presentación de Tibble:
+
+```{r}
+df2019 <-  Congreso_local_2019_f %>%
+  group_by(ID_ESTADO, Sexo) %>%
+  summarise(
+    Curules = sum(Curules),
+    Votos = sum(Votos),
+    .groups = 'drop'
+  ) %>%
+  arrange(ID_ESTADO)
+
+reactable(df2019)
+```
+
+## Proceso Electoral 2020:
+
+```{r}
+Congreso_local_2020 <- Congreso_local_2019%>%
+filter(Año == 2020)%>%
+rename(NUAL = 'NA')
+```
+
+```{r}
+reactable(Congreso_local_2020)
+```
+
+### Manipulación de Datos:
+
+```{r}
+Congreso_local_2020 <- Congreso_local_2020%>%
+gather(key = Partido, value=Votos, PAN:CAND_IND3)
+```
+
+```{r}
+Congreso_local_2020 <- Congreso_local_2020[!is.na(Congreso_local_2020$Votos),]
+```
+
+```{r}
+reactable(Congreso_local_2020)
+```
+
+### Agrupaciones:
+
+```{r}
+Congreso_local_2020 <- Congreso_local_2020%>%
+  group_by(ID_ESTADO, NOMBRE_ESTADO, Partido)%>%
+  reframe(Votos = sum(Votos))%>%
+  arrange((ID_ESTADO))
+
+reactable(Congreso_local_2020)
+```
+
+```{r}
+suma_2020<- Congreso_local_2020%>%
+            group_by(ID_ESTADO, NOMBRE_ESTADO)%>%
+            reframe(Votos1 = sum(Votos))
+
+reactable(suma_2020)
+```
+
+### Uniones:
+
+```{r}
+Congreso_local_2020 <- Congreso_local_2020 %>%
+    left_join(suma_2020, by = c("ID_ESTADO", "NOMBRE_ESTADO"))
+```
+
+```{r}
+Congreso_local_2020 <- Congreso_local_2020%>%
+    mutate(Proporcion= (Votos/Votos1)*(100))
+
+Congreso_local_2020
+```
+
+```{r}
+integrantes2023 <- read_excel("C:/Users/Marcial/Desktop/DOCS/Tesis/Integrantes/2023.xlsx")
+```
+
+### Manipulación de Datos:
+
+```{r}
+integrantes2023 <- integrantes2023%>%
+gather(key = Sexo, value= Curules, Hombres: `No Binario`)
+```
+
+```{r}
+integrantes2023 <- integrantes2023%>%
+  replace_na(list(Curules = 0))
+```
+
+```{r}
+integrantes2023 <- integrantes2023%>%
+  filter(Curules != 0)
+```
+
+```{r}
+reactable(integrantes2023)
+```
+
+### Uniones:
+
+```{r}
+Congreso_local_2020_f <- Congreso_local_2020%>%
+    inner_join(integrantes2023, by = c("ID_ESTADO", "Partido"))
+
+reactable(Congreso_local_2020_f)
+```
+
+### Presentación del Tibble:
+
+```{r}
+df2020 <-  Congreso_local_2020_f %>%
+  group_by(ID_ESTADO, Sexo) %>%
+  summarise(
+    Curules = sum(Curules),
+    Votos = sum(Votos),
+    .groups = 'drop'
+  ) %>%
+  arrange(ID_ESTADO)
+
+reactable(df2020)
+```

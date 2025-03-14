@@ -1,0 +1,4 @@
+"0","senfed2018_1_f <- senfed2018_1_f%>%"
+"0","    mutate(Proporcion= (Votos/Votos1)*(100))"
+"0",""
+"0","reactable(senfed2018_1_f)"

@@ -1,0 +1,171 @@
+---
+title: "Proceso Electoral 2018"
+css: custom.css
+---
+
+## Proceso Electoral 2018:
+
+```{r}
+library(tidyverse)
+library(readxl)
+library(reactable)
+options(scipen=999)
+options(digits=2)
+```
+
+```{r}
+Congreso_local_2018 <- read_excel("C:/Users/Eduardo/Documents/PC/SECCION1/DOCS/Tesis/BASE 2018.xlsx")
+Congreso_local_2018
+```
+
+```{r}
+Congreso_local_2018 <- Congreso_local_2018%>%
+rename(NUAL = 'NA')
+```
+
+### Manipulación de Datos:
+
+```{r}
+Congreso_local_2018 <- Congreso_local_2018%>%
+gather(key = Partido, value=Votos, PAN:CAND_IND_40)
+```
+
+```{r}
+table(Congreso_local_2018$`NOMBRE_ESTADO`)
+```
+
+```{r}
+reactable(Congreso_local_2018)
+```
+
+```{r}
+Congreso_local_2018 <- Congreso_local_2018[!is.na(Congreso_local_2018$Votos),]
+```
+
+### Agrupaciones:
+
+```{r}
+congreso2018 <- Congreso_local_2018%>%
+  group_by(ID_ESTADO, NOMBRE_ESTADO, Partido)%>%
+  reframe(Votos = sum(Votos))%>%
+  arrange((ID_ESTADO))
+
+reactable(congreso2018)
+```
+
+```{r}
+suma_2018 <- congreso2018%>%
+            group_by(ID_ESTADO, NOMBRE_ESTADO)%>%
+            reframe(Votos1 = sum(Votos))
+
+reactable(suma_2018)
+```
+
+### Uniones:
+
+```{r}
+congreso2018 <- congreso2018 %>%
+    left_join(suma_2018, by = c("ID_ESTADO", "NOMBRE_ESTADO"))
+```
+
+```{r}
+congreso2018 <- congreso2018%>%
+    mutate(Proporcion= (Votos/Votos1)*(100))
+
+reactable(congreso2018)
+```
+
+```{r}
+integrantes2018 <-  read_csv("C:/Users/Eduardo/Documents/PC/SECCION1/DOCS/Tesis/Integrantes/integrante2019.csv")
+integrantes2018
+```
+
+### Manipulación de Datos:
+
+```{r}
+integrantes2018 <- integrantes2018%>%
+gather(key = Sexo, value= Curules, legele1:legele5)
+```
+
+```{r}
+reactable(integrantes2018)
+```
+
+```{r}
+integrantes2018 <- integrantes2018%>%
+  replace_na(list(Curules = 0))
+```
+
+```{r}
+integrantes2018 <- integrantes2018%>%
+  filter(Curules != 0)
+```
+
+```{r}
+reactable(integrantes2018)
+```
+
+### Manipulación de Variables:
+
+```{r}
+integrantes2018 <- integrantes2018%>%
+  mutate(grupopar = case_when(grupopar == 1 ~ "MORENA",
+                          grupopar == 2 ~ "PAN",
+                          grupopar == 3 ~ "PRD",
+                          grupopar == 4 ~ "PT",
+                          grupopar == 5 ~ "PES",
+                          grupopar == 6 ~ "MC",
+                          grupopar == 7 ~ "NUAL",
+                          grupopar == 8 ~ "PRI",
+                          grupopar == 9 ~ "PVEM",
+                          grupopar == 10 ~ "Otro",
+                          grupopar == 11 ~ "Otro",
+                          grupopar == 12 ~ "Otro",
+                          grupopar == 99 ~ "Otro"))
+```
+
+```{r}
+integrantes2018 <- integrantes2018%>%
+mutate(Sexo = case_when(Sexo == "legele1" ~ "Hombres",
+                          Sexo == "legele2" ~ "Mujeres",
+                          Sexo == "legele4" ~ "Hombres",
+                          Sexo == "legele5" ~ "Mujeres")) 
+```
+
+```{r}
+reactable(integrantes2018)
+```
+
+```{r}
+integrantes2018 <- integrantes2018%>%
+rename(Partido = grupopar)
+```
+
+```{r}
+integrantes2018 <- integrantes2018%>%
+rename(ID_ESTADO = entidad)
+```
+
+### Uniones:
+
+```{r}
+congreso2018_1 <- congreso2018%>%
+    inner_join(integrantes2018, by = c("ID_ESTADO", "Partido"))
+
+reactable(congreso2018_1)
+```
+
+### Presentación de Tibble:
+
+```{r}
+df2018 <- congreso2018_1 %>%
+  group_by(ID_ESTADO, Sexo) %>%
+  summarise(
+    Curules = sum(Curules),
+    Votos = sum(Votos),
+    .groups = 'drop'
+  ) %>%
+  arrange(ID_ESTADO)
+
+reactable(df2018)
+```

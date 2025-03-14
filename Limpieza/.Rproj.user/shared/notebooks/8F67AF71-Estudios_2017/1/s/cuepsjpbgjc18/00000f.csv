@@ -1,0 +1,5 @@
+"0","estudios_2017_ENTSRE<- estudios_2017%>%"
+"0","  group_by(Entidad, Sexo, Rango_Estudios)%>%"
+"0","  reframe(Casos = sum(Casos), Proporcion= sum(Proporcion))"
+"0",""
+"0","reactable(estudios_2017_ENTSRE)"

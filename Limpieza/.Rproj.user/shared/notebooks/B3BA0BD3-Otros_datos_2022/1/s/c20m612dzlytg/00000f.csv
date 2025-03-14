@@ -1,0 +1,5 @@
+"0","edades_2022_DISC<- edades_2022%>%"
+"0","  group_by(Entidad, Sexo, Discapacidad, Tipo_1, Tipo_2, Tipo_3)%>%"
+"0","  reframe(Casos=n())%>%"
+"0","  mutate(Proporcion = Casos/sum(Casos)*100)"
+"0","reactable(edades_2022_DISC)"

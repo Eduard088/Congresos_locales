@@ -1,0 +1,8 @@
+"0","ent_2020_1 <- ingresos_2020 %>%"
+"0","  group_by(partido) %>%"
+"0","  reframe(remuneracion = sum(remuneracion_salario_o_equivalente), "
+"0","          asistencia = sum(asistencia_legislativa),"
+"0","          gestionp = sum(gestion_parlamentaria),"
+"0","          asistencia_ciud = sum(atencion_ciudadana),"
+"0","          otro = sum(otro))"
+"0","reactable(ent_2020_1)"

@@ -1,0 +1,3 @@
+"0","integantes_senado <- integantes_senado%>%"
+"0","mutate(Partido = ifelse(Partido == ""morena"", ""MORENA"", Partido))%>%"
+"0","mutate(Partido = ifelse(Partido == ""Movimiento Ciudadano"", ""MC"", Partido))"

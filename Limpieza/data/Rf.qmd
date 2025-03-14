@@ -1,0 +1,135 @@
+---
+title: "Random Forest"
+css: custom.css
+---
+
+```{r}
+library(tidyverse)
+library(randomForest)
+library(readxl)
+library(reactable)
+library(plotly)
+```
+
+### Random Forest: Una Introducción Completa
+
+El **Random Forest** es un modelo de aprendizaje supervisado basado en árboles de decisión. Fue introducido por Leo Breiman y Adele Cutler, y es conocido por ser un **algoritmo ensemble** que combina múltiples árboles de decisión para mejorar la precisión y reducir el riesgo de sobreajuste.
+
+#### ¿Cómo Funciona?
+
+Random Forest construye una gran cantidad de árboles de decisión durante el entrenamiento y realiza predicciones promediando (en regresión) o votando (en clasificación) los resultados de estos árboles.
+
+##### Pasos Clave:
+
+1.  **Bootstrap Aggregation (Bagging):**\
+    Cada árbol se entrena con una muestra aleatoria (con reemplazo) del conjunto de datos original.
+
+2.  **Selección Aleatoria de Características:**\
+    Durante la construcción de cada árbol, en cada división se considera un subconjunto aleatorio de las características, lo que introduce diversidad y reduce la correlación entre árboles.
+
+3.  **Promedio o Votación:**\
+    Las predicciones finales se obtienen promediando las predicciones (regresión) o por votación mayoritaria (clasificación).
+
+#### Ventajas:
+
+-   Maneja datos grandes y no lineales.
+
+-   Reduce el sobreajuste debido a la aleatoriedad en la selección de muestras y características.
+
+-   Es robusto a valores atípicos y datos faltantes.
+
+#### Desventajas:
+
+-   Puede ser más lento de entrenar y predecir que un modelo lineal.
+
+-   Es menos interpretable que un árbol de decisión simple.
+
+### Ejemplo en R: Random Forest para Regresión
+
+Utilizaremos el paquete `randomForest` para construir un modelo que prediga el **ingreso mensual** basado en **años de escolaridad** y una nueva variable, **edad**. También visualizaremos los resultados con `ggplot2`.
+
+##### Paso 1: Crear el Tibble Ficticio
+
+```{r}
+set.seed(123)
+datos_rf <- tibble(
+  ingreso_mensual = round(rnorm(200, mean = 5000, sd = 1500), 2),
+  anios_esc = round(rnorm(200, mean = 12, sd = 3), 1),
+  edad = sample(18:65, 200, replace = TRUE)
+)
+
+reactable(datos_rf)
+```
+
+```{r}
+modelo_rf <- randomForest(
+  ingreso_mensual ~ anios_esc + edad,
+  data = datos_rf,
+  ntree = 500,  
+  mtry = 2,   
+  importance = TRUE  
+)
+
+print(modelo_rf)
+
+```
+
+##### Paso 3: Importancia de las Variables
+
+```{r}
+varImpPlot(modelo_rf, main = "Importancia de las Variables")
+```
+
+##### Paso 4: Predicciones y Visualización
+
+Generaremos un tibble con los valores reales y predichos para compararlos visualmente.
+
+```{r}
+datos_rf <- datos_rf %>%
+  mutate(prediccion = predict(modelo_rf, newdata = datos_rf))
+
+ggplot(datos_rf, aes(x = ingreso_mensual, y = prediccion)) +
+  geom_point(color = "blue", alpha = 0.6) +
+  geom_abline(slope = 1, intercept = 0, color = "red", linetype = "dashed") +
+  labs(
+    title = "Random Forest: Valores Reales vs Predichos",
+    x = "Ingreso Mensual (Real)",
+    y = "Ingreso Mensual (Predicho)"
+  ) +
+    theme_minimal()+
+    theme(
+    plot.title = element_text(face = "bold", hjust = 0.5, color = "#34495E", size = 12),
+    plot.subtitle = element_text(hjust = 0.5, color = "#7F8C8D"),
+    plot.caption = element_text(size = 10, hjust = 1, color = "#95A5A6"),
+    axis.title.x = element_text(face = "bold", color = "#2C3E50", size = 12),
+    axis.title.y = element_text(face = "bold", color = "#2C3E50", size = 12),
+    axis.text = element_text(color = "#34495E"),
+    panel.grid.major = element_line(color = "#D0D3D4", linewidth = 0.5),
+    panel.grid.minor = element_blank()
+  )
+
+```
+
+```{r}
+ggplotly(
+  ggplot(datos_rf, aes(x = ingreso_mensual, y = prediccion)) +
+  geom_point(color = "blue", alpha = 0.6) +
+  geom_abline(slope = 1, intercept = 0, color = "red", linetype = "dashed") +
+  labs(
+    title = "Random Forest: Valores Reales vs Predichos",
+    x = "Ingreso Mensual (Real)",
+    y = "Ingreso Mensual (Predicho)"
+  ) +
+      theme_minimal()+
+    theme(
+    plot.title = element_text(face = "bold", hjust = 0.5, color = "#34495E", size = 12),
+    plot.subtitle = element_text(hjust = 0.5, color = "#7F8C8D"),
+    plot.caption = element_text(size = 10, hjust = 1, color = "#95A5A6"),
+    axis.title.x = element_text(face = "bold", color = "#2C3E50", size = 12),
+    axis.title.y = element_text(face = "bold", color = "#2C3E50", size = 12),
+    axis.text = element_text(color = "#34495E"),
+    panel.grid.major = element_line(color = "#D0D3D4", linewidth = 0.5),
+    panel.grid.minor = element_blank()
+  )
+)
+```

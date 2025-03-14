@@ -1,0 +1,4 @@
+"0","dipfed2015_1_f <- dipfed2015_1_f%>%"
+"0","mutate(Partido = ifelse(Partido == ""PH"", ""Otro"", Partido))%>%"
+"0","mutate(Partido = ifelse(Partido == ""NVA_ALIANZA"", ""NUAL"", Partido))%>%"
+"0","mutate(Partido = ifelse(Partido == ""ES"", ""PES"", Partido))"

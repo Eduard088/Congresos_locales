@@ -1,0 +1,107 @@
+---
+title: "Edad de los Legisladores 2019"
+css: custom.css
+---
+
+## Estudios de las Personas Legisladoras en México:
+
+En la presente sección se presenta la limpieza y transformación de los datos concernientes a loa grados de estudios de los legisladores locales en México al finalizar el censo, en su edición 2019. Los datos obtenidos se utilizan en la tesis según el apartado que corresponda.
+
+```{r}
+library(tidyverse)
+library(readxl)
+library(rmarkdown)
+library(reactable)
+options(scipen=999)
+options(digits=2)
+```
+
+### Transformación de Datos:
+
+```{r}
+estudios_2019 <- read_csv("C:/Users/Eduardo/Documents/PC/SECCION1/DOCS/Tesis/Estudios/estudios_2018.csv")
+reactable(estudios_2019)
+```
+
+```{r}
+estudios_2019 <- estudios_2019 %>%
+  select(-legesctt) %>%
+  gather(key = Rango_Estudios, value = Casos, legesc1:legesc16) %>%
+  filter(!is.na(Casos) & Casos != "NSS" & Casos != 0) %>%
+  mutate(
+    Casos = as.numeric(Casos),  
+    Sexo = case_when(
+      Rango_Estudios %in% c("legesc1", "legesc3", "legesc5", "legesc7", "legesc9", "legesc11", "legesc13", "legesc15") ~ "Hombres",
+      TRUE ~ "Mujeres"
+    ),
+    Rango_Estudios = case_when(
+      Rango_Estudios %in% c("legesc1", "legesc2") ~ "No Estudió",
+      Rango_Estudios %in% c("legesc3", "legesc4") ~ "Preescolar y Primaria",
+      Rango_Estudios %in% c("legesc5", "legesc6") ~ "Secundaria",
+      Rango_Estudios %in% c("legesc7", "legesc8") ~ "Preparatoria",
+      Rango_Estudios %in% c("legesc9", "legesc10") ~ "Educación Técnica",
+      Rango_Estudios %in% c("legesc11", "legesc12") ~ "Licenciatura",
+      Rango_Estudios %in% c("legesc13", "legesc14") ~ "Maestría",
+      Rango_Estudios %in% c("legesc15", "legesc16") ~ "Doctorado"),
+    Proporcion = Casos / sum(Casos) * 100
+  ) %>%
+  rename(Entidad = entidad, Partido = grupopar)%>%
+  mutate(Partido = case_when(
+Partido == 0 ~ "No aplica",
+Partido == 1 ~ "MORENA",
+Partido == 2 ~ "PAN",
+Partido == 3 ~ "PRD",
+Partido == 4 ~ "PT",
+Partido == 5 ~ "PES",
+Partido == 6 ~ "MC",
+Partido == 7 ~ "NUAL",
+Partido == 8 ~ "PRI",
+Partido == 9 ~ "PVEM",
+Partido == 10 ~ "Otro",
+Partido == 11 ~ "Otro",
+Partido == 12 ~ "Otro",
+Partido == 99 ~ "Otro"
+  ))
+
+reactable(estudios_2019)
+```
+
+### Tibble Agrupado por Entidad, Sexo y Rango de Estudios:
+
+```{r}
+estudios_2019_ENTSRE<- estudios_2019%>%
+  group_by(Entidad, Sexo, Rango_Estudios)%>%
+  reframe(Casos = sum(Casos), Proporcion= sum(Proporcion))
+
+reactable(estudios_2019_ENTSRE)
+```
+
+### Tibbli Agrupado por Sexo y Rango de Estudios:
+
+```{r}
+estudios_2019_SRE <- estudios_2019%>%
+  group_by(Sexo, Rango_Estudios)%>%
+  reframe(Casos=sum(Casos), Proporcion=sum(Proporcion))
+
+reactable(estudios_2019_SRE)
+```
+
+### Tibble Agrupado por Rango de Estudios:
+
+```{r}
+estudios_2019_RE <- estudios_2019%>%
+  group_by(Rango_Estudios)%>%
+  reframe(Casos=sum(Casos), Proporcion=sum(Proporcion))
+
+reactable(estudios_2019_RE)
+```
+
+### Tibble Agrupado por Partido y Rango de Estudios:
+
+```{r}
+estudios_2019_PRE <- estudios_2019%>%
+  group_by(Partido, Rango_Estudios)%>%
+  reframe(Casos=sum(Casos), Proporcion=sum(Proporcion))
+
+reactable(estudios_2019_PRE)
+```

@@ -1,0 +1,2 @@
+"0","edades_2019 <- read_excel(""C:/Users/Eduardo/Documents/PC/SECCION1/DOCS/Tesis/Edad/edad20191.xlsx"")"
+"0","reactable(edades_2019)"

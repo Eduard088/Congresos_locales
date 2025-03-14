@@ -1,0 +1,2 @@
+"0","Cargos <- read.csv(""C:/Users/Eduardo/Documents/PC/SECCION1/DOCS/Tesis/CARGOS POR SEXO_2018-2023.csv"", fileEncoding = ""UTF-8"")"
+"0","reactable(Cargos)"

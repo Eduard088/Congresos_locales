@@ -1,0 +1,82 @@
+project:
+  type: book  
+  title: "Limpieza de Datos"
+
+book:
+  title: "Base de Datos"
+  author: "Eduardo Barea"
+  date: "18-01-2024"
+  repo-url: https://github.com/jjallaire/hopr/
+  repo-actions: [edit]
+  downloads: [pdf, epub]
+  chapters:
+    - index.qmd
+    - part: "índice"
+      chapters:
+        - Votos_2015.qmd
+        - Votos_2016.qmd
+        - Votos_2018.qmd
+        - Votoa_2019.qmd
+        - Votos_2021.qmd
+        - Votos_2022.qmd
+    - part: "Sufragios"
+      chapters:
+        - Votos_Federal_2015.qmd
+        - Votos_Federal_2018.qmd
+        - Votos_Federal_2021.qmd
+        - Votos_Federal_Senado_2018.qmd
+    - part: "Edades de Representantes"
+      chapters:
+        - Edad_2016.qmd
+        - Edad_2017.qmd
+        - Edad_2018.qmd
+        - Edad_2019.qmd
+        - Edad_2020.qmd
+    - part: "Estudios de Representantes"
+      chapters:
+        - Estudios_2016.qmd
+        - Estudios_2017.qmd
+        - Estudios_2018.qmd
+        - Estudios_2019.qmd
+        - Estudios_2020.qmd
+        - Estudios_2021.qmd
+        - Estudios_2022.qmd
+    - part: "Salarios de Representantes"
+      chapters:
+        - Limpieza_2016.qmd
+        - Limpieza_2017.qmd
+        - Limpieza.qmd
+        - Limpieza2020.qmd
+    - part: "Otros Datos"
+      chapters:
+        - Otros_datos_2022.qmd
+    - part: "Modelos de Evaluación"
+      chapters:
+        - Regresion.qmd
+        - Rf.qmd
+        - Rsf.qmd
+        - Monte.qmd
+  sidebar:
+    style: docked
+    background: dark
+
+format:
+  html:
+    theme:
+      light: [flatly, theme-light.scss]
+      dark: [darkly, theme-dark.scss]
+    code-fold: true
+    code-summary: "Mostrar el Código"
+
+comments:
+  hypothesis: true
+  
+highlight-style: vim-dark
+
+website:
+  navbar:
+    background: primary
+    search: true
+    left:
+      - text: "Home"
+        href: index.qmd

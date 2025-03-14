@@ -1,0 +1,4 @@
+"0","senfed2018_2_f1 <- senfed2018_2_f%>%"
+"0","inner_join(integantes_senado_1, by= ""Partido"") "
+"0",""
+"0","reactable(senfed2018_2_f1)"

@@ -1,0 +1,6 @@
+"0","congreso2015 <- congreso_local_2015l%>%"
+"0","  group_by(ID_ESTADO, NOMBRE_ESTADO, Partido)%>%"
+"0","  reframe(Votos = sum(Votos))%>%"
+"0","  arrange((ID_ESTADO))"
+"0",""
+"0","reactable(congreso2015)"

@@ -1,0 +1,6 @@
+"0","edades_2022_Diversidad_S <- edades_2022%>%"
+"0","  group_by(Entidad, Sexo, Diversidad_S)%>%"
+"0","  reframe(Casos=n())%>%"
+"0","  mutate(Proporcion = Casos/sum(Casos)*100)"
+"0",""
+"0","reactable(edades_2022_Diversidad_S)"

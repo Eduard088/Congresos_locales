@@ -1,0 +1,2 @@
+"0","congreso_local_2015 <- read_excel(""C:/Users/Eduardo/Documents/PC/SECCION1/DOCS/Tesis/BASE 2015.xlsx"")"
+"0","reactable(congreso_local_2015)"

@@ -1,0 +1,3 @@
+"0","senfed2018_1 <- senfed2018_1[!is.na(senfed2018_1$Votos),]"
+"0",""
+"0","reactable(senfed2018_1)"

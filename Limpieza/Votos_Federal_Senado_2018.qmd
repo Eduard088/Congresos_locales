@@ -1,0 +1,170 @@
+---
+title: "Proceso Electoral 2018"
+css: custom.css
+---
+
+## Proceso Electoral 2018:
+
+```{r}
+library(tidyverse)
+library(readxl)
+library(reactable)
+options(scipen=999)
+options(digits=2)
+```
+
+```{r}
+senfed2018 <- read_excel("C:/Users/Eduardo/Documents/PC/SECCION1/DOCS/Tesis/FEDERAL/senado 2018.xlsx")
+
+reactable(senfed2018)
+```
+
+```{r}
+senfed2018 <- senfed2018%>%
+select(-ID_DISTRITO, -CABECERA_DISTRITAL, -SECCIONES , -CASILLAS	, -TRIBUNAL, -JUICIO, -OBSERVACIONES, -RUTA_ACTA)
+
+reactable(senfed2018)
+```
+
+```{r}
+senfed2018 <- senfed2018%>%
+rename(NUAL = 'NA')
+
+reactable(senfed2018)
+```
+
+### Manipulación de Datos:
+
+```{r}
+senfed2018 <- senfed2018%>%
+select(-NUM_VOTOS_CAN_NREG)%>%
+gather(key = Partido, value = Votos, PAN:CAND_IND7)
+
+reactable(senfed2018)
+```
+
+### Agrupaciones:
+
+```{r}
+senfed2018_1 <- senfed2018%>%
+  group_by(ID_ESTADO, NOMBRE_ESTADO, Partido)%>%
+  reframe(Votos = sum(Votos),
+         LISTA_NOMINAL = sum(LISTA_NOMINAL),
+         TOTAL_VOTOS = sum(TOTAL_VOTOS),
+         NUM_VOTOS_NULOS = sum(NUM_VOTOS_NULOS))%>%
+  arrange((ID_ESTADO))
+
+reactable(senfed2018_1)
+```
+
+```{r}
+senfed2018_1 <- senfed2018_1[!is.na(senfed2018_1$Votos),]
+
+reactable(senfed2018_1)
+```
+
+### Agrupaciones:
+
+```{r}
+suma_F2018S <- senfed2018_1%>%
+            group_by(ID_ESTADO, NOMBRE_ESTADO)%>%
+            reframe(Votos1 = sum(Votos))
+
+reactable(suma_F2018S)
+```
+
+### Uniones:
+
+```{r}
+senfed2018_1_f <- senfed2018_1 %>%
+    left_join(suma_F2018S, by = c("ID_ESTADO", "NOMBRE_ESTADO"))
+
+reactable(senfed2018_1_f)
+```
+
+```{r}
+senfed2018_1_f <- senfed2018_1_f%>%
+    mutate(Proporcion= (Votos/Votos1)*(100))
+
+reactable(senfed2018_1_f)
+```
+
+### Agrupaciones:
+
+```{r}
+senfed2018_2_f  <- senfed2018_1_f%>%
+group_by(Partido)%>%
+reframe(sum(Votos),
+          sum(Proporcion/32))
+
+reactable(senfed2018_2_f)
+```
+
+```{r}
+senfed2018_2_f <- senfed2018_2_f%>%
+rename(Votos = `sum(Votos)`, 
+      Proporcion = `sum(Proporcion/32)`)
+
+reactable(senfed2018_2_f)
+```
+
+```{r}
+senfed2018_2_f <- senfed2018_2_f%>%
+mutate(Partido = ifelse(Partido == "NUAL", "Otro", Partido))%>%
+mutate(Partido = ifelse(Partido == "ES", "PES", Partido))
+```
+
+```{r}
+reactable(senfed2018_2_f)
+```
+
+```{r}
+integantes_senado <- read_excel("C:/Users/Eduardo/Documents/PC/SECCION1/DOCS/Tesis/Integrantes/Integrantes_senado.xlsx")
+
+reactable(integantes_senado)
+```
+
+```{r}
+integantes_senado <- integantes_senado%>%
+mutate(Partido = ifelse(Partido == "morena", "MORENA", Partido))%>%
+mutate(Partido = ifelse(Partido == "Movimiento Ciudadano", "MC", Partido))
+```
+
+### Agrupaciones:
+
+```{r}
+integantes_senado_1 <- integantes_senado%>%
+group_by(Partido, Sexo)%>%
+count()
+
+reactable(integantes_senado_1)
+```
+
+```{r}
+integantes_senado_1 <- integantes_senado_1%>%
+mutate(Partido = ifelse(Partido == "SG", "Otro", Partido))
+```
+
+```{r}
+reactable(integantes_senado_1)
+```
+
+### Uniones:
+
+```{r}
+senfed2018_2_f1 <- senfed2018_2_f%>%
+inner_join(integantes_senado_1, by= "Partido") 
+
+reactable(senfed2018_2_f1)
+```
+
+```{r}
+senfed2018_2_f1 <- senfed2018_2_f1%>%
+rename(Curules = `n`)
+```
+
+### Presentación del Tibble:
+
+```{r}
+reactable(senfed2018_2_f1)
+```

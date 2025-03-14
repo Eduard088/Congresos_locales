@@ -1,0 +1,4 @@
+"0","senfed2018 <- senfed2018%>%"
+"0","select(-ID_DISTRITO, -CABECERA_DISTRITAL, -SECCIONES , -CASILLAS	, -TRIBUNAL, -JUICIO, -OBSERVACIONES, -RUTA_ACTA)"
+"0",""
+"0","reactable(senfed2018)"

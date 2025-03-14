@@ -1,0 +1,2 @@
+"0","dipfed2015_1_f1 <- dipfed2015_2_f%>%"
+"0","inner_join(integrantes2015, by= ""Partido"")  "

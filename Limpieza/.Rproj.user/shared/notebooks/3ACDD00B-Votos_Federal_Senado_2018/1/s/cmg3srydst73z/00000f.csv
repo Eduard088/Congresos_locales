@@ -1,0 +1,3 @@
+"0","integantes_senado <- read_excel(""C:/Users/Eduardo/Documents/PC/SECCION1/DOCS/Tesis/Integrantes/Integrantes_senado.xlsx"")"
+"0",""
+"0","reactable(integantes_senado)"

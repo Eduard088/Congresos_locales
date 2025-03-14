@@ -1,0 +1,2 @@
+"0","dipfed2015 <- dipfed2015%>%"
+"0","select(-NUM_VOTOS_CAN_NREG,-OBSERVACIONES)"

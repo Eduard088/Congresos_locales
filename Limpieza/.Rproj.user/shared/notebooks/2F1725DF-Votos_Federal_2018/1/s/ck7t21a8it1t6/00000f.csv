@@ -1,0 +1,2 @@
+"0","dipfed2018_1_f <- dipfed2018_1 %>%"
+"0","    left_join(suma_F2018, by = c(""ID_ESTADO"", ""NOMBRE_ESTADO""))"

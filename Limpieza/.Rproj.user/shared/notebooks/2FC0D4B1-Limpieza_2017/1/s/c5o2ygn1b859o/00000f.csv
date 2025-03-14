@@ -1,0 +1,2 @@
+"0","ingresos_2017 <- ingresos_2017%>%"
+"0","  filter(Casos != 0)"

@@ -1,0 +1,2 @@
+"0","edades_2017 <- edades_2017 %>%"
+"0","  mutate(Casos = as.numeric(Casos))"

@@ -1,0 +1,7 @@
+"0","set.seed(123)"
+"0","datos <- tibble("
+"0","  ingreso_mensual = round(rnorm(100, mean = 5000, sd = 1500), 2),"
+"0","  anios_esc = round(rnorm(100, mean = 12, sd = 3), 1)"
+"0",")"
+"0",""
+"0","head(datos)"

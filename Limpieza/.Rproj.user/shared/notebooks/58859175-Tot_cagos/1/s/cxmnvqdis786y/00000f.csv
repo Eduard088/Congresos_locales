@@ -1,0 +1,7 @@
+"0","Cargos_ACA <- Cargos%>%"
+"0","  group_by(Año, CARGO)%>%"
+"0","  reframe(Casos=n())%>%"
+"0","  mutate(Proporcion = Casos/sum(Casos)*100)%>%"
+"0","  arrange(desc(Proporcion))"
+"0",""
+"0","reactable(Cargos_ACA)"

@@ -1,0 +1,2 @@
+"0","integrantes2018 <- integrantes2018 %>%"
+"0","  mutate(Partido = ifelse(Partido %in% c(""SP"", ""NUAL"", ""CONV"", ""ALT"", ""IND"", ""PVEM""), ""Otro"", Partido))"

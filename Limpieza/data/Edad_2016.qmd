@@ -1,0 +1,219 @@
+---
+title: "Edad de los Legisladores 2016"
+css: custom.css
+---
+
+## Edad de las personas legisladoras en México:
+
+En la presente sección se presenta la limpieza y transformación de los datos concernientes a las edades de los legisladores locales en México al finalizar el censo, en su edición 2016. Los datos obtenidos se utilizan en la tesis según el apartado que corresponda.
+
+```{r}
+library(tidyverse)
+library(readxl)
+library(rmarkdown)
+library(plotly)
+library(reactable)
+options(scipen=999)
+options(digits=2)
+```
+
+### Transformación de Datos:
+
+```{r}
+edades_2016 <- read_csv("C:/Users/Eduardo/Documents/PC/SECCION1/DOCS/Tesis/Edad/edad_2016.csv")
+reactable(edades_2016)
+```
+
+```{r}
+edades_2016 <- edades_2016%>%
+  select(-legedatt)%>%
+  gather(key = Rango_Edad, value = Casos, legeda1:legedanm)
+
+reactable(edades_2016)
+```
+
+```{r}
+edades_2016 <- edades_2016[!is.na(edades_2016$Casos),]
+```
+
+```{r}
+edades_2016 <- edades_2016 %>%
+  filter(Casos != 0)
+```
+
+```{r}
+edades_2016  <- edades_2016 %>%
+  filter(Casos != "NSS")
+```
+
+```{r}
+reactable(edades_2016)
+```
+
+```{r}
+edades_2016 <- edades_2016%>%
+  mutate(Sexo = case_when(
+    Rango_Edad == "legeda1" ~ "Hombres",
+    Rango_Edad == "legeda2" ~ "Mujeres",
+    Rango_Edad == "legeda3" ~ "Hombres",
+    Rango_Edad == "legeda4" ~ "Mujeres",
+    Rango_Edad == "legeda5" ~ "Hombres",
+    Rango_Edad == "legeda6" ~ "Mujeres",
+    Rango_Edad == "legeda7" ~ "Hombres",
+    Rango_Edad == "legeda8" ~ "Mujeres",
+    Rango_Edad == "legeda9" ~ "Hombres",
+    Rango_Edad == "legeda10" ~ "Mujeres",
+    Rango_Edad == "legeda11" ~ "Hombres",
+    Rango_Edad == "legeda12" ~ "Mujeres",
+    Rango_Edad == "legeda13" ~ "Hombres",
+    Rango_Edad == "legeda14" ~ "Mujeres",
+    Rango_Edad == "legeda15" ~ "Hombres",
+    Rango_Edad == "legeda16" ~ "Mujeres",
+    Rango_Edad == "legeda17" ~ "Hombres",
+    Rango_Edad == "legeda18" ~ "Mujeres",
+    Rango_Edad == "legedanh" ~ "Hombres",
+    Rango_Edad == "legedanm" ~ "Mujeres"
+  )) 
+
+reactable(edades_2016)
+```
+
+```{r}
+edades_2016 <- edades_2016%>%
+  mutate(gru_parl = case_when(
+    gru_parl == 1 ~ "MORENA",
+    gru_parl == 2 ~ "PAN",
+    gru_parl == 3 ~ "PRD",
+    gru_parl == 4 ~ "PT",
+    gru_parl == 5 ~ "MC",
+    gru_parl == 6 ~ "NUAL",
+    gru_parl == 7 ~ "PRI",
+    gru_parl == 8 ~ "PVEM",
+    gru_parl == 9 ~ "PES",
+    gru_parl == 10 ~ "Otro",
+    gru_parl == 11 ~ "Otro",
+    gru_parl == 12 ~ "Otro",
+    gru_parl == 99  ~ "Otro",
+  ))
+```
+
+```{r}
+edades_2016 <- edades_2016%>%
+  mutate(Rango_Edad = case_when(
+    Rango_Edad == "legeda1" ~ "18 a 24",
+    Rango_Edad == "legeda2" ~ "18 a 24",
+    Rango_Edad == "legeda3" ~ "25 a 29",
+    Rango_Edad == "legeda4" ~ "25 a 29",
+    Rango_Edad == "legeda5" ~ "30 a 34",
+    Rango_Edad == "legeda6" ~ "30 a 34",
+    Rango_Edad == "legeda7" ~ "35 a 39",
+    Rango_Edad == "legeda8" ~ "35 a 39",
+    Rango_Edad == "legeda9" ~ "40 a 44",
+    Rango_Edad == "legeda10" ~ "40 a 44",
+    Rango_Edad == "legeda11" ~ "45 a 49",
+    Rango_Edad == "legeda12" ~ "45 a 49",
+    Rango_Edad == "legeda13" ~ "50 a 54",
+    Rango_Edad == "legeda14" ~ "50 a 54",
+    Rango_Edad == "legeda15" ~ "55 a 59",
+    Rango_Edad == "legeda16" ~ "55 a 59",
+    Rango_Edad == "legeda17" ~ "60 o más",
+    Rango_Edad == "legeda18" ~ "60 o más",
+    Rango_Edad == "legedanh" ~ "No especifica",
+    Rango_Edad == "legedanm" ~ "No especifica"
+  )) 
+
+reactable(edades_2016)
+```
+
+```{r}
+edades_2016 <- edades_2016%>%
+  rename(Partido = gru_parl)
+
+reactable(edades_2016)
+```
+
+## Manupulación de Variables:
+
+```{r}
+edades_2016 <- edades_2016%>%
+  mutate(Edad_estimada = case_when(
+    Rango_Edad == "18 a 24" ~ 21,
+    Rango_Edad == "18 a 24" ~ 21,
+    Rango_Edad == "25 a 29" ~ 27,
+    Rango_Edad == "25 a 29" ~ 27,
+    Rango_Edad == "30 a 34" ~ 32,
+    Rango_Edad == "30 a 34" ~ 32,
+    Rango_Edad == "35 a 39" ~ 37,
+    Rango_Edad == "35 a 39" ~ 37,
+    Rango_Edad == "40 a 44" ~ 42,
+    Rango_Edad == "40 a 44" ~ 42,
+    Rango_Edad == "45 a 49" ~ 47,
+    Rango_Edad == "45 a 49" ~ 47,
+    Rango_Edad == "50 a 54" ~ 52,
+    Rango_Edad == "50 a 54" ~ 52,
+    Rango_Edad == "55 a 59" ~ 57,
+    Rango_Edad == "55 a 59" ~ 57,
+    Rango_Edad == "60 o más" ~ 60,
+    Rango_Edad == "60 o más" ~ 60,
+    Rango_Edad == "No especifica" ~ 0,
+    Rango_Edad == "No especifica" ~ 0
+  ))
+
+reactable(edades_2016)
+```
+
+### Tibble Agrupado por Entidad Federativa y el Sexo:
+
+```{r}
+edades_2016 <- edades_2016 %>%
+  mutate(Casos = as.numeric(Casos))
+```
+
+```{r}
+edades_2016_GPENT <- edades_2016%>%
+  group_by(entidad, Partido, Rango_Edad)%>%
+  reframe(Casos = sum(Casos))
+
+reactable(edades_2016_GPENT)
+```
+
+### Tibble Agrupado por Entidad Federativa:
+
+```{r}
+edades_2016_ENT <- edades_2016%>%
+  group_by(entidad, Rango_Edad, Edad_estimada)%>%
+  reframe(Casos = sum(Casos))
+
+reactable(edades_2016_ENT)
+```
+
+### Tibble Agrupado por Grupo Parlamentario:
+
+```{r}
+edades_GP_2016 <- edades_2016%>%
+  group_by(Partido, Rango_Edad, Edad_estimada)%>%
+  reframe(Casos = sum(Casos))
+
+reactable(edades_GP_2016)
+```
+
+### Tibble Agrupado por Rango de Edad a Nivel Nacional:
+
+```{r}
+edades_RG_2016 <- edades_2016%>%
+  group_by(Rango_Edad, Edad_estimada)%>%
+  reframe(Casos = sum(Casos))
+
+reactable(edades_RG_2016)
+```
+
+### Tibble Agrupado por Sexo y Edad a Nivel Nacional:
+
+```{r}
+edades_RGS_2016 <- edades_2016%>%
+  group_by(Rango_Edad, Sexo, Edad_estimada)%>%
+  reframe(Casos=sum(Casos))%>%
+  mutate(Proporcion = Casos/sum(Casos)*100)
+
+reactable(edades_RGS_2016)
+```

@@ -1,0 +1,3 @@
+"0","dipfed2018_1_f <- dipfed2018_1_f%>%"
+"0","mutate(Partido = ifelse(Partido == ""NA"", ""NUAL"", Partido))%>%"
+"0","mutate(Partido = ifelse(Partido == ""ES"", ""PES"", Partido))"

@@ -1,0 +1,4 @@
+"0","senfed2018_1_f <- senfed2018_1 %>%"
+"0","    left_join(suma_F2018S, by = c(""ID_ESTADO"", ""NOMBRE_ESTADO""))"
+"0",""
+"0","reactable(senfed2018_1_f)"

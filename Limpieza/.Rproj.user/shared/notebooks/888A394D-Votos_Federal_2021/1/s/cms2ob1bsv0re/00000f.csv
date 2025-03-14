@@ -1,0 +1,4 @@
+"0","dipfed2021 <- dipfed2021%>%"
+"0","gather(key=Partido, value=Votos, PAN:CAND_IND3)"
+"0",""
+"0","reactable(dipfed2021)"

@@ -1,0 +1,1 @@
+write_xlsx(tibble_unido, "C:/Users/Marcial/Desktop/DOCS/mi_archivo.xlsx")

@@ -1,0 +1,3 @@
+"0","library(janitor)"
+"0",""
+"0","ingresos_2020 <- ingresos_2020 %>% clean_names()"

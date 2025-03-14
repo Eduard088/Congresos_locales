@@ -1,0 +1,5 @@
+"0","suma_F2018 <- dipfed2018_1%>%"
+"0","            group_by(ID_ESTADO, NOMBRE_ESTADO)%>%"
+"0","            reframe(Votos1 = sum(Votos))"
+"0",""
+"0","reactable(suma_F2018)"

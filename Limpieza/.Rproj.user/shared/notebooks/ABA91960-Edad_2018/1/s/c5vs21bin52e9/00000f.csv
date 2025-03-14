@@ -1,0 +1,5 @@
+"0","edades_RG_2018 <- edades_2018%>%"
+"0","  group_by(Rango_Edad, Edad_estimada)%>%"
+"0","  reframe(Casos = sum(Casos))"
+"0",""
+"0","reactable(edades_RG_2018)"

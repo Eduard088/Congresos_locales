@@ -1,0 +1,116 @@
+financiamiento <- read_excel("C://Users//Eduardo//Documents//PC//Financiamiento.xlsx")
+
+financiamiento <- financiamiento %>%
+  gather(key=Categoria, value=Monto, Igualitario:Proporcional)
+
+# Elimina filas con NA y valores de 0 en todas las columnas
+financiamiento <- financiamiento %>%
+  filter_all(all_vars(!is.na(.) & . != 0))
+
+financiamiento <- financiamiento %>%
+  select(-Concepto, Categoria)%>%
+  group_by(Año, Partido) %>%
+  reframe(Financiamiento = sum(Monto))
+
+
+Elecciones <- read_excel("C:/Users/Eduardo/Documents/Tibble_mlar.xlsx")
+
+
+financiamiento_MR <- financiamiento %>%
+  filter(Partido=="MORENA")
+
+Elecciones_MR <- Elecciones %>%
+filter(Partido=="MORENA")
+
+Congresosfed <- Congresosfed %>%
+  inner_join(financiamiento, by=c("Año", "Partido"))
+
+Senadofed <- senfed2018_2_f1 %>%
+  inner_join(financiamiento_sen, by="Partido")
+
+financiamiento_sen <- financiamiento %>%
+  filter(Año==2018)
+
+
+write.xlsx(Elecciones_1, "Elecciones_1.xlsx")
+
+
+
+aa <-  financiamiento %>%
+  filter(Concepto == "Actividades Específicas") %>%
+  group_by(Año) %>%
+  reframe(sum(Monto))
+
+aa <- aa%>%
+  rename(Monto = "sum(Monto)")
+
+aa %>%
+  reframe(sum(Monto))
+
+
+
+
+
+aa %>%
+  filter(Año==2021)%>%
+  group_by(Año) %>%
+  reframe(sum(Monto))
+
+
+##
+financiamientoind <- read_excel("C://Users//Eduardo//Documents//PC//FinanciamientoInd.xlsx") 
+
+financiamientoind %>%
+  group_by(Año) %>%
+  reframe(sum(Monto))
+
+
+Elecciones <- Elecciones %>%
+  rename(
+    "ID_estado" = "ID_ESTADO",
+    "Nombre_estado" = "NOMBRE_ESTADO",
+    "Total_votos" = "Votos1",
+    "Lista_nominal" = "PARTICIPACION"
+  )
+
+Senadofed <- Senadofed %>%
+  mutate(Periodo = "2018-2024", Legislatura = "LXIV y LXV") 
+
+
+
+
+financiamiento <- drop_na(financiamiento)
+
+
+write_csv(Elecciones, "C://Users//Eduardo//Documents//Federales/Elecciones.csv")
+write_csv(Congresosfed, "C://Users//Eduardo//Documents//Federales/Diputadosfed.csv")
+write_csv(Senadofed, "C://Users//Eduardo//Documents//Federales/Senado.csv")
+write_csv(financiamiento, "C://Users//Eduardo//Documents//Federales/financiamiento.csv")
+write_csv(financiamientoind, "C://Users//Eduardo//Documents//Federales/financiamiento_ind.csv")    
+
+
+
+library(highcharter)
+library(dplyr)
+
+# Datos de ejemplo
+set.seed(123)
+datos <- rnorm(100)
+
+# Calcular ECDF
+ecdf_data <- ecdf(datos)
+x_vals <- sort(datos)
+y_vals <- ecdf_data(x_vals)
+
+
+# Crear gráfico ECDF con highcharter
+highchart() %>%
+  hc_chart(type = "line") %>%
+  hc_title(text = "ECDF con highcharter") %>%
+  hc_xAxis(title = list(text = "Valor")) %>%
+  hc_yAxis(title = list(text = "Probabilidad acumulada")) %>%
+  hc_add_series(
+    data = list_parse2(data.frame(x = x_vals, y = y_vals)),
+    name = "ECDF",
+    marker = list(enabled = TRUE)
+  )

@@ -1,0 +1,1 @@
+"0","dipfed2015_1 <- dipfed2015_1[!is.na(dipfed2015_1$Votos),]"

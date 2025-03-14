@@ -1,0 +1,12 @@
+name: base_de_datos_sobre_la_partitocracia_mexicana_2015-2023
+title: Limpieza
+username: txxock-eduardo0alexander-barea0poot
+account: txxock-eduardo0alexander-barea0poot
+server: posit.cloud
+hostUrl: https://api.posit.cloud/v1
+appId: 9351012
+bundleId: 9423277
+url: https://posit.cloud/content/9351012
+version: 1
+asMultiple: FALSE
+asStatic: TRUE

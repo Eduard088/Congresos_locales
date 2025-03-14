@@ -1,0 +1,5 @@
+"0","integantes_senado_1 <- integantes_senado%>%"
+"0","group_by(Partido, Sexo)%>%"
+"0","count()"
+"0",""
+"0","reactable(integantes_senado_1)"

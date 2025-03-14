@@ -1,0 +1,22 @@
+"0","library(tidyverse)"
+"0","library(randomForest)"
+"2","randomForest 4.7-1.2
+"
+"2","Type rfNews() to see new features/changes/bug fixes.
+"
+"2","
+Adjuntando el paquete: ‘randomForest’
+
+"
+"2","The following object is masked from ‘package:dplyr’:
+
+    combine
+
+"
+"2","The following object is masked from ‘package:ggplot2’:
+
+    margin
+
+"
+"0","library(readxl)"
+"0","library(plotly)"

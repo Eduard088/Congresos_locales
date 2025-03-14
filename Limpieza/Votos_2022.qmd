@@ -1,0 +1,109 @@
+---
+title: "Proceso Electoral 2012"
+css: custom.css
+---
+
+### Proceso Electoral 2022:
+
+```{r}
+library(tidyverse)
+library(readxl)
+library(reactable)
+options(scipen=999)
+options(digits=2)
+```
+
+```{r}
+Congreso_local_2022<- read_excel("C:/Users/Eduardo/Documents/PC/SECCION1/DOCS/Tesis/BASE 2022.xlsx")
+reactable(Congreso_local_2022)
+```
+
+### Manipulación de Datos:
+
+```{r}
+Congreso_local_2022 <- Congreso_local_2022%>%
+gather(key = Partido, value = Votos, PAN:Otro)
+```
+
+### Agrupación de Datos:
+
+```{r}
+Congreso_local_2022_f <- Congreso_local_2022%>%
+  group_by(ID_ESTADO, NOMBRE_ESTADO, Partido)%>%
+  reframe(Votos = sum(Votos))%>%
+  arrange((ID_ESTADO))
+
+reactable(Congreso_local_2022_f)
+```
+
+```{r}
+suma_2022 <- Congreso_local_2022_f%>%
+            group_by(ID_ESTADO, NOMBRE_ESTADO)%>%
+            reframe(Votos1 = sum(Votos))
+
+suma_2022
+```
+
+### Uniones:
+
+```{r}
+Congreso_local_2022_f <- Congreso_local_2022_f %>%
+    left_join(suma_2022, by = c("ID_ESTADO", "NOMBRE_ESTADO"))
+```
+
+```{r}
+Congreso_local_2022_f <- Congreso_local_2022_f%>%
+    mutate(Proporcion= (Votos/Votos1)*(100))
+
+reactable(Congreso_local_2022_f)
+```
+
+```{r}
+integrantes2023 <- read_excel("C:/Users/Eduardo/Documents/PC/SECCION1/DOCS/Tesis/Integrantes/2023.xlsx")
+reactable(integrantes2023)
+```
+
+### Manipulación de Datos:
+
+```{r}
+integrantes2023 <- integrantes2023%>%
+gather(key = Sexo, value= Curules, Hombres: `No Binario`)
+```
+
+```{r}
+integrantes2023 <- integrantes2023%>%
+  replace_na(list(Curules = 0))
+```
+
+```{r}
+integrantes2023 <- integrantes2023%>%
+  filter(Curules != 0)
+```
+
+```{r}
+reactable(integrantes2023)
+```
+
+### Uniones:
+
+```{r}
+Congreso_local_2022_f1 <- Congreso_local_2022_f%>%
+    inner_join(integrantes2023, by = c("ID_ESTADO", "Partido"))
+
+reactable(Congreso_local_2022_f1)
+```
+
+### Presentaciones de Tibble:
+
+```{r}
+df2022 <-  Congreso_local_2022_f1 %>%
+  group_by(ID_ESTADO, Sexo) %>%
+  summarise(
+    Curules = sum(Curules),
+    Votos = sum(Votos),
+    .groups = 'drop'
+  ) %>%
+  arrange(ID_ESTADO)
+
+reactable(df2022)
+```

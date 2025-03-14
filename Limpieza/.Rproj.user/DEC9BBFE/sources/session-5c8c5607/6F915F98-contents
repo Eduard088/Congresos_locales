@@ -1,0 +1,178 @@
+---
+title: "Proceso Electoral 2015"
+css: custom.css
+---
+
+## Proceso Electoral 2015:
+
+```{r}
+library(tidyverse)
+library(readxl)
+library(reactable)
+options(scipen=999)
+options(digits=2)
+```
+
+```{r}
+congreso_local_2015 <- read_excel("C:/Users/Eduardo/Documents/PC/SECCION1/DOCS/Tesis/BASE 2015.xlsx")
+reactable(congreso_local_2015)
+```
+
+```{r}
+congreso_local_2015 <- congreso_local_2015 %>%
+                       rename(NUAL =  'NA')
+```
+
+```{r}
+head(tibble(congreso_local_2015))
+colnames(congreso_local_2015)
+```
+
+### Manipulación de Datos:
+
+```{r}
+congreso_local_2015l <- congreso_local_2015%>%
+    gather(key = Partido, value=Votos, PAN:CAND_IND10)
+```
+
+```{r}
+head(congreso_local_2015l)
+```
+
+```{r}
+congreso_local_2015l <- congreso_local_2015l[!is.na(congreso_local_2015l$Votos),]
+```
+
+### Agrupaciones:
+
+```{r}
+congreso2015 <- congreso_local_2015l%>%
+  group_by(ID_ESTADO, NOMBRE_ESTADO, Partido)%>%
+  reframe(Votos = sum(Votos))%>%
+  arrange((ID_ESTADO))
+
+reactable(congreso2015)
+```
+
+```{r}
+suma_2015 <- congreso2015%>%
+            group_by(ID_ESTADO, NOMBRE_ESTADO)%>%
+            reframe(Votos1 = sum(Votos))
+
+head(suma_2015)
+```
+
+### Uniones:
+
+```{r}
+congreso2015 <- congreso2015 %>%
+    left_join(suma_2015, by = c("ID_ESTADO", "NOMBRE_ESTADO"))
+
+reactable(congreso2015)
+```
+
+```{r}
+congreso2015 <- congreso2015%>%
+    mutate(Proporcion= (Votos/Votos1)*(100))
+```
+
+```{r}
+integrantes2015 <- read_csv("C:/Users/Eduardo/Documents/PC/SECCION1/DOCS/Tesis/Integrantes/integrantes2016.csv")
+head(integrantes2015)
+```
+
+### Manipulación de Datos:
+
+```{r}
+integrantes2015 <- integrantes2015%>%
+    select(-legelett)%>%
+gather(key = Sexo, value= Curules, legele1:legele5)
+```
+
+```{r}
+integrantes2015 <- integrantes2015%>%
+  replace_na(list(Curules = 0))
+```
+
+```{r}
+integrantes2015 <- integrantes2015%>%
+  filter(Curules != 0)
+```
+
+```{r}
+reactable(integrantes2015)
+```
+
+### Manipulación de Variables:
+
+```{r}
+integrantes2015 <- integrantes2015%>%
+  mutate(gru_parl = case_when(gru_parl == 1 ~ "MORENA",
+                          gru_parl == 2 ~ "PAN",
+                          gru_parl == 3 ~ "PRD",
+                          gru_parl == 4 ~ "PT",
+                          gru_parl == 5 ~ "MC",
+                          gru_parl == 6 ~ "NUAL",
+                          gru_parl == 7 ~ "PRI",
+                          gru_parl == 8 ~ "PVEM",
+                          gru_parl == 9 ~ "PES",
+                          gru_parl == 10 ~ "Otro",
+                          gru_parl == 11 ~ "Otro",
+                          gru_parl == 12 ~ "Otro",
+                          gru_parl == 99 ~ "Otro"))
+```
+
+```{r}
+integrantes2015 <- integrantes2015%>%
+mutate(Sexo = case_when(Sexo == "legele1" ~ "Hombres",
+                          Sexo == "legele2" ~ "Mujeres",
+                          Sexo == "legele4" ~ "Hombres",
+                          Sexo == "legele5" ~ "Mujeres"))
+```
+
+```{r}
+table(integrantes2015$gru_parl, integrantes2015$Curules)
+```
+
+```{r}
+integrantes2015 <- integrantes2015%>%
+rename(Partido = gru_parl)
+```
+
+```{r}
+integrantes2015 <- integrantes2015%>%
+rename(ID_ESTADO = entidad)
+```
+
+```{r}
+integrantes2015%>%
+arrange((ID_ESTADO)) 
+```
+
+```{r}
+reactable(congreso_local_2015l)
+```
+
+### Uniones:
+
+```{r}
+congreso2015 <- congreso2015%>%
+    inner_join(integrantes2015, by = c("ID_ESTADO", "Partido"))
+
+reactable(congreso2015)
+```
+
+### Presentación del Tibble:
+
+```{r}
+df_2015 <- congreso2015 %>%
+  group_by(ID_ESTADO, Sexo) %>%
+  summarise(
+    Curules = sum(Curules),
+    Votos = sum(Votos),
+    .groups = 'drop'
+  ) %>%
+  arrange(ID_ESTADO)
+
+reactable(df_2015)
+```

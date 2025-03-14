@@ -1,0 +1,92 @@
+---
+title: "Proceso Electoral 2020"
+css: custom.css
+---
+
+## Ingresos:
+
+En la presente sección se presenta la limpieza y transformación de los datos concernientes al salario que los legisladores locales en México percibieron al finalizar el censo, en su edición 2018. Los datos obtenidos se utilizan en la tesis según el apartado que corresponda.
+
+## Proceso Electoral 2020:
+
+```{r}
+library(tidyverse)
+library(readxl)
+library(rmarkdown)
+library(plotly)
+library(reactable)
+options(scipen=999)
+options(digits=2)
+```
+
+```{r}
+ingresos_2020 <- read_excel("C:/Users/Eduardo/Documents/PC/SECCION1/DOCS/Tesis/Ingresos/salario2020.xlsx")
+reactable(ingresos_2020)
+```
+
+```{r}
+colnames(ingresos_2020)
+```
+
+```{r}
+library(janitor)
+
+ingresos_2020 <- ingresos_2020 %>% clean_names()
+```
+
+```{r}
+table(is.na(ingresos_2020$remuneracion_salario_o_equivalente))
+```
+
+```{r}
+ingresos_2020[ingresos_2020 == "-"] <- NA
+
+
+ingresos_2020 <- ingresos_2020[!is.na(ingresos_2020$remuneracion_salario_o_equivalente), ]
+
+reactable(ingresos_2020)
+```
+
+```{r}
+ingresos_2020 <- ingresos_2020 %>%
+  mutate(across(where(is.character), ~ na_if(., "NA")))
+
+ingresos_2020 <- ingresos_2020 %>%
+  filter(!is.na(remuneracion_salario_o_equivalente))
+```
+
+```{r}
+glimpse(ingresos_2020)
+```
+
+```{r}
+ingresos_2020 <- ingresos_2020 %>%
+  mutate(across(c(`remuneracion_salario_o_equivalente`, 
+                  `asistencia_legislativa`, 
+                  `gestion_parlamentaria`, 
+                  `atencion_ciudadana`, 
+                  `otro`), as.numeric))
+
+```
+
+```{r}
+ent_2020 <- ingresos_2020 %>%
+  group_by(entidad, partido) %>%
+  reframe(remuneracion = sum(remuneracion_salario_o_equivalente), 
+          asistencia = sum(asistencia_legislativa),
+          gestionp = sum(gestion_parlamentaria),
+          asistencia_ciud = sum(atencion_ciudadana),
+          otro = sum(otro))
+reactable(ent_2020)
+```
+
+```{r}
+ent_2020_1 <- ingresos_2020 %>%
+  group_by(partido) %>%
+  reframe(remuneracion = sum(remuneracion_salario_o_equivalente), 
+          asistencia = sum(asistencia_legislativa),
+          gestionp = sum(gestion_parlamentaria),
+          asistencia_ciud = sum(atencion_ciudadana),
+          otro = sum(otro))
+reactable(ent_2020_1)
+```

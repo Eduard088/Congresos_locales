@@ -1,0 +1,2 @@
+"0","integrantes2015 <- integrantes2015%>%"
+"0","  replace_na(list(Curules = 0))"

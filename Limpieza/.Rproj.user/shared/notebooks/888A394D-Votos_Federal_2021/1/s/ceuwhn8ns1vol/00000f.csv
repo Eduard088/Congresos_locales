@@ -1,0 +1,4 @@
+"0","integrantes2021 <- integrantes2021%>%"
+"0","mutate(Partido = ifelse(Partido == ""SP"", ""Otro"", Partido))"
+"0",""
+"0","reactable(integrantes2021)"

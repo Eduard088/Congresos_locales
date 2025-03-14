@@ -1,0 +1,2 @@
+"0","lista_2 <- Lista%>%"
+"0","  inner_join(Licenciatura, by = ""folio"")"

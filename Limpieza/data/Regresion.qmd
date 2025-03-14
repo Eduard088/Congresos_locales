@@ -1,0 +1,184 @@
+---
+title: "Regresión Lineal"
+css: custom.css
+---
+
+```{r}
+library(tidyverse)
+library(readxl)
+library(plotly)
+library(reactable)
+```
+
+### Regresión Lineal: Una Introducción Completa
+
+La **regresión lineal** es uno de los modelos más simples y ampliamente utilizados en Machine Learning. Es un método estadístico que busca modelar la relación entre una variable dependiente (o respuesta) y una o más variables independientes (o predictoras) mediante una ecuación lineal. Se utiliza tanto para la predicción como para el análisis de relaciones entre variables.
+
+#### Conceptos Clave
+
+1.  **Modelo Lineal**\
+    La ecuación general de un modelo de regresión lineal simple es:
+
+    y=β0+β1x+ϵy = \beta\_0 + \beta\_1 x + \epsilony=β0​+β1​x+ϵ
+
+    Donde:
+
+    -   yyy: Variable dependiente (lo que queremos predecir).
+
+    -   xxx: Variable independiente (predictor).
+
+    -   β0\beta\_0β0​: Intercepto (valor de yyy cuando x=0x = 0x=0).
+
+    -   β1\beta\_1β1​: Pendiente (tasa de cambio de yyy por unidad de xxx).
+
+    -   ϵ\epsilonϵ: Término de error (captura la variabilidad no explicada por el modelo).
+
+    Para regresión lineal múltiple, se extiende a:
+
+    y=β0+β1x1+β2x2+…+βpxp+ϵy = \beta\_0 + \beta\_1 x_1 + \beta\_2 x_2 + \ldots + \beta\_p x_p + \epsilony=β0​+β1​x1​+β2​x2​+…+βp​xp​+ϵ
+
+2.  **Suposiciones**\
+    Para que los resultados del modelo sean válidos, debemos cumplir con las siguientes suposiciones:
+
+    -   Linealidad: Existe una relación lineal entre las variables.
+
+    -   Homocedasticidad: La varianza de los errores es constante.
+
+    -   Independencia: Las observaciones son independientes entre sí.
+
+    -   Normalidad: Los errores siguen una distribución normal.
+
+3.  **Evaluación del Modelo**\
+    Las métricas comunes para evaluar una regresión lineal son:
+
+    -   **R-cuadrado (**R2R\^2R2): Proporción de la varianza explicada por el modelo.
+
+    -   **Error cuadrático medio (MSE)**: Promedio de los cuadrados de los errores.
+
+    -   **Valor de p**: Evalúa la significancia estadística de los coeficientes.
+
+#### Ejemplo Práctico en RStudio
+
+A continuación, construimos un modelo de regresión lineal con un tibble ficticio que contiene datos de ingresos y nivel educativo, y generamos visualizaciones con `ggplot2`.
+
+##### Paso 1: Creación del Tibble
+
+```{r}
+set.seed(123)
+datos <- tibble(
+  ingreso_mensual = round(rnorm(100, mean = 5000, sd = 1500), 2),
+  anios_esc = round(rnorm(100, mean = 12, sd = 3), 1)
+)
+
+reactable(datos)
+```
+
+##### Paso 2: Ajuste del Modelo de Regresión Lineal
+
+```{r}
+modelo <- lm(ingreso_mensual ~ anios_esc, data = datos)
+
+# Resumen del modelo
+summary(modelo)
+```
+
+##### Paso 3: Visualización con ggplot2
+
+```{r}
+ggplot(datos, aes(x = anios_esc, y = ingreso_mensual)) +
+  geom_point(color = "blue", alpha = 0.6) +
+  geom_smooth(method = "lm", se = TRUE, color = "red") +
+  labs(
+    title = "Regresión Lineal: Ingreso Mensual vs Años de Escolaridad",
+    x = "Años de Escolaridad",
+    y = "Ingreso Mensual"
+  ) +
+    theme(
+    plot.title = element_text(face = "bold", hjust = 0.5, color = "#34495E", size = 12),
+    plot.subtitle = element_text(hjust = 0.5, color = "#7F8C8D"),
+    plot.caption = element_text(size = 10, hjust = 1, color = "#95A5A6"),
+    axis.title.x = element_text(face = "bold", color = "#2C3E50", size = 12),
+    axis.title.y = element_text(face = "bold", color = "#2C3E50", size = 12),
+    axis.text = element_text(color = "#34495E"),
+    panel.grid.major = element_line(color = "#D0D3D4", linewidth = 0.5),
+    panel.grid.minor = element_blank()
+  )
+```
+
+```{r}
+ggplotly(ggplot(datos, aes(x = anios_esc, y = ingreso_mensual)) +
+  geom_point(color = "blue", alpha = 0.6) +
+  geom_smooth(method = "lm", se = TRUE, color = "red") +
+  labs(
+    title = "Regresión Lineal: Ingreso Mensual vs Años de Escolaridad",
+    x = "Años de Escolaridad",
+    y = "Ingreso Mensual"
+  ) +
+    theme_minimal()+
+    theme(
+    plot.title = element_text(face = "bold", hjust = 0.5, color = "#34495E", size = 12),
+    plot.subtitle = element_text(hjust = 0.5, color = "#7F8C8D"),
+    plot.caption = element_text(size = 10, hjust = 1, color = "#95A5A6"),
+    axis.title.x = element_text(face = "bold", color = "#2C3E50", size = 12),
+    axis.title.y = element_text(face = "bold", color = "#2C3E50", size = 12),
+    axis.text = element_text(color = "#34495E"),
+    panel.grid.major = element_line(color = "#D0D3D4", linewidth = 0.5),
+    panel.grid.minor = element_blank()
+  )
+)
+```
+
+##### Paso 4: Diagnóstico del Modelo
+
+Los gráficos de diagnóstico son esenciales para verificar las suposiciones de la regresión lineal.
+
+```{r}
+ggplot(data.frame(
+  residuos = resid(modelo),
+  ajuste = fitted(modelo)
+), aes(x = ajuste, y = residuos)) +
+  geom_point(color = "darkgreen", alpha = 0.7) +
+  geom_hline(yintercept = 0, linetype = "dashed", color = "red") +
+  labs(
+    title = "Gráfico de Residuos",
+    x = "Valores Ajustados",
+    y = "Residuos"
+  ) +
+  theme_minimal()+
+    theme(
+    plot.title = element_text(face = "bold", hjust = 0.5, color = "#34495E", size = 12),
+    plot.subtitle = element_text(hjust = 0.5, color = "#7F8C8D"),
+    plot.caption = element_text(size = 10, hjust = 1, color = "#95A5A6"),
+    axis.title.x = element_text(face = "bold", color = "#2C3E50", size = 12),
+    axis.title.y = element_text(face = "bold", color = "#2C3E50", size = 12),
+    axis.text = element_text(color = "#34495E"),
+    panel.grid.major = element_line(color = "#D0D3D4", linewidth = 0.5),
+    panel.grid.minor = element_blank()
+  )
+```
+
+```{r}
+ggplotly(ggplot(data.frame(
+  residuos = resid(modelo),
+  ajuste = fitted(modelo)
+), aes(x = ajuste, y = residuos)) +
+  geom_point(color = "darkgreen", alpha = 0.7) +
+  geom_hline(yintercept = 0, linetype = "dashed", color = "red") +
+  labs(
+    title = "Gráfico de Residuos",
+    x = "Valores Ajustados",
+    y = "Residuos"
+  ) +
+  theme_minimal()+
+    theme(
+    plot.title = element_text(face = "bold", hjust = 0.5, color = "#34495E", size = 12),
+    plot.subtitle = element_text(hjust = 0.5, color = "#7F8C8D"),
+    plot.caption = element_text(size = 10, hjust = 1, color = "#95A5A6"),
+    axis.title.x = element_text(face = "bold", color = "#2C3E50", size = 12),
+    axis.title.y = element_text(face = "bold", color = "#2C3E50", size = 12),
+    axis.text = element_text(color = "#34495E"),
+    panel.grid.major = element_line(color = "#D0D3D4", linewidth = 0.5),
+    panel.grid.minor = element_blank()
+  )
+)
+```

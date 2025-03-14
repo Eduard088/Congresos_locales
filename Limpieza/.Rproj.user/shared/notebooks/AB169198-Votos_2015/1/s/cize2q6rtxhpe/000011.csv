@@ -1,0 +1,4 @@
+"0","congreso2015 <- congreso2015%>%"
+"0","    inner_join(integrantes2015, by = c(""ID_ESTADO"", ""Partido""))"
+"0",""
+"0","reactable(congreso2015)"

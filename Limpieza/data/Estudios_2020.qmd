@@ -1,0 +1,108 @@
+---
+title: "Grados Académicos de los Legisladores 2019"
+css: custom.css
+---
+
+### Estudios de los Legisladores en México:
+
+En la presente sección se presenta la limpieza y transformación de los datos concernientes a loa grados de estudios de los legisladores locales en México al finalizar el censo, en su edición 2020. Los datos obtenidos se utilizan en la tesis según el apartado que corresponda.
+
+```{r}
+library(tidyverse)
+library(readxl)
+library(rmarkdown)
+library(reactable)
+options(scipen=999)
+options(digits=2)
+```
+
+### Transformación de Datos:
+
+```{r}
+estudios_2020 <- read_excel("C:/Users/Eduardo/Documents/PC/SECCION1/DOCS/Tesis/Estudios/estudios_20191.xlsx")
+reactable(estudios_2020)
+```
+
+```{r}
+estudios_2020 <- estudios_2020 %>%
+  select(entidad_a, sexo_c, gdoestud_d, estagrad_b) %>%
+  rename(Entidad = entidad_a, Sexo = sexo_c, Rango_Estudios = gdoestud_d, Estatus = estagrad_b) %>%
+  mutate(Sexo = case_when(
+    Sexo == 0 ~ "No aplica",
+    Sexo == 1 ~ "Hombre",
+    Sexo == 2 ~ "Mujer",
+    Sexo == 9 ~ "No se sabe",
+    Sexo == 97 ~ "No cuenta con elementos para responder",
+    Sexo == 98 ~ "Información no disponible"
+  )) %>%
+  mutate(Rango_Estudios = case_when(
+    Rango_Estudios == 0 ~ "No aplica",
+    Rango_Estudios == 1 ~ "Ninguno",
+    Rango_Estudios == 2 ~ "Preescolar o primaria",
+    Rango_Estudios == 3 ~ "Secundaria",
+    Rango_Estudios == 4 ~ "Preparatoria",
+    Rango_Estudios == 5 ~ "Carrera técnica o carrera comercial",
+    Rango_Estudios == 6 ~ "Licenciatura",
+    Rango_Estudios == 7 ~ "Maestría",
+    Rango_Estudios == 8 ~ "Doctorado",
+    Rango_Estudios == 9 ~ "No se sabe",
+    Rango_Estudios == 97 ~ "No cuenta con elementos para responder",
+    Rango_Estudios == 98 ~ "Información no disponible"
+  )) %>%
+  mutate(Estatus = case_when(
+    Estatus == 0 ~ "No aplica",
+    Estatus == 1 ~ "Cursando",
+    Estatus == 2 ~ "Inconcluso",
+    Estatus == 3 ~ "Concluido",
+    Estatus == 4 ~ "Titulado",
+    Estatus == 9 ~ "No se sabe",
+    Estatus == 97 ~ "No cuenta con elementos para responder",
+    Estatus == 98 ~ "Información no disponible"
+  )) %>%
+  group_by(Entidad, Sexo, Rango_Estudios, Estatus) %>%  
+  reframe(Casos = n())%>%
+  mutate(Proporcion = Casos/sum(Casos)*100)
+
+reactable(estudios_2020)
+```
+
+### Tibble Agrupado por Sexo, Rango de Estudios y Estatus:
+
+```{r}
+estudios_2020_SREE <- estudios_2020 %>%
+  group_by(Sexo, Rango_Estudios, Estatus) %>%
+  reframe(Casos = sum(Casos, na.rm = TRUE), Proporcion = sum(Proporcion))
+
+reactable(estudios_2020_SREE)
+  
+```
+
+### Tibble Agrupado por Rango de Estudios y Estatus:
+
+```{r}
+estudios_2020_REE <- estudios_2020 %>%
+  group_by(Rango_Estudios, Estatus) %>%
+  reframe(Casos = sum(Casos, na.rm = TRUE), Proporcion = sum(Proporcion))
+
+reactable(estudios_2020_REE)
+```
+
+### Tibble Agrupado por Sexo y Rango de Estudios:
+
+```{r}
+estudios_2020_SRE <- estudios_2020 %>%
+  group_by(Sexo, Rango_Estudios) %>%
+  reframe(Casos = sum(Casos, na.rm = TRUE), Proporcion = sum(Proporcion))
+
+reactable(estudios_2020_SRE)
+```
+
+### Tibble Agrupado por Rango de Estudios:
+
+```{r}
+estudios_2020_RE <- estudios_2020 %>%
+  group_by(Rango_Estudios) %>%
+  reframe(Casos = sum(Casos, na.rm = TRUE), Proporcion = sum(Proporcion))
+
+reactable(estudios_2020_RE)
+```

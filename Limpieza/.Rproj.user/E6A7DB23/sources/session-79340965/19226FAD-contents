@@ -1,0 +1,37 @@
+project:
+  type: book  
+  title: "Limpieza de Datos"
+
+book:
+  title: "Ingresos de Legisladores"
+  author: "Eduardo Barea"
+  date: "18-01-2024"
+  repo-url: https://github.com/jjallaire/hopr/
+  repo-actions: [edit]
+  downloads: [pdf, epub]
+  chapters:
+    - index.qmd
+    - Limpieza.qmd
+  sidebar:
+    style: docked
+    background: dark
+format:
+  html:
+    theme:
+      light: [flatly, theme-light.scss]
+      dark: [darkly, theme-dark.scss]
+    code-fold: true
+    code-summary: "Mostrar el Código"
+
+comments:
+  hypothesis: true
+  
+highlight-style: vim-dark
+
+website:
+  navbar:
+    background: primary
+    search: true
+    left:
+      - text: "Home"
+        href: index.qmd

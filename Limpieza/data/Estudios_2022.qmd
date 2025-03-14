@@ -1,0 +1,332 @@
+---
+title: "Grado Académico de los Legisladores 2022"
+css: custom.css
+---
+
+### Estudios de los Legisladores en México:
+
+En la presente sección se presenta la limpieza y transformación de los datos concernientes a loa grados de estudios de los legisladores locales en México al finalizar el censo, en su edición 2023. Los datos obtenidos se utilizan en la tesis según el apartado que corresponda.
+
+```{r}
+library(tidyverse)
+library(readxl)
+library(rmarkdown)
+library(reactable)
+options(scipen=999)
+options(digits=2)
+```
+
+### Transformación de Datos:
+
+```{r}
+estudios_2023 <- read_csv("C:/Users/Eduardo/Documents/PC/SECCION1/DOCS/Tesis/Estudios/estudios_2022.csv")
+reactable(estudios_2023)
+```
+
+```{r}
+estudios_2023_1 <- estudios_2023 %>%
+  select(entidad_federativa, sexo_inclusivo, grado_estudios_ni, estatus_estudios, carreras_1, carreras_2, carreras_3)%>%
+  rename(Entidad = entidad_federativa, Sexo = sexo_inclusivo, Rango_Estudios = grado_estudios_ni, Estatus = estatus_estudios, Licenciatura= carreras_1, Maestria= carreras_2, Doctorado= carreras_3)%>%
+  gather(key = Educacion_Superior, value=Clasificacion, Licenciatura:Doctorado)%>%
+  mutate(Sexo = case_when(
+    Sexo == 0 ~ "No aplica",
+    Sexo == 1 ~ "Hombre",
+    Sexo == 2 ~ "Mujer",
+    Sexo == 3 ~ "No binario",
+    Sexo == 9 ~ "No se sabe",
+    Sexo == 97 ~ "No cuenta con elementos para responder",
+    Sexo == 98 ~ "Información no disponible"
+  )) %>%
+  mutate(Rango_Estudios = case_when(
+    Rango_Estudios == 0 ~ "No aplica",
+    Rango_Estudios == 1 ~ "Ninguno",
+    Rango_Estudios == 2 ~ "Preescolar o primaria",
+    Rango_Estudios == 3 ~ "Secundaria",
+    Rango_Estudios == 4 ~ "Preparatoria",
+    Rango_Estudios == 5 ~ "Carrera técnica o carrera comercial",
+    Rango_Estudios == 6 ~ "Licenciatura",
+    Rango_Estudios == 7 ~ "Maestría",
+    Rango_Estudios == 8 ~ "Doctorado",
+    Rango_Estudios == 9 ~ "No se sabe",
+    Rango_Estudios == 99 ~ "No cuenta con elementos para responder",
+    Rango_Estudios == 996 ~ "No publicable por el principio de confidencialidad o por reserva de información",
+    Rango_Estudios == 997 ~ "No cuenta con elementos para responder",
+    Rango_Estudios == 998 ~ "Información no disponible"
+  )) %>%
+  mutate(Estatus = case_when(
+    Estatus == 0 ~ "No aplica",
+    Estatus == 1 ~ "Cursando",
+    Estatus == 2 ~ "Inconcluso",
+    Estatus == 3 ~ "Concluido",
+    Estatus == 4 ~ "Titulado",
+    Estatus == 9 ~ "No Identificado",
+    Estatus == 96 ~ "No publicable por el principio de confidencialidad o por reserva de información",
+    Estatus == 97 ~ "No cuenta con elementos para responder",
+    Estatus == 98 ~ "Información no disponible"
+  )) %>%
+  group_by(Entidad, Sexo, Rango_Estudios, Estatus, Educacion_Superior, Clasificacion)%>%  
+  drop_na(Clasificacion) %>%
+  reframe(Casos = n())%>%
+  mutate(Proporcion = Casos/sum(Casos)*100)
+
+reactable(estudios_2023_1)
+```
+
+```{r}
+Licenciatura <- tribble(
+  ~folio, ~Carrera,
+  0, "No aplica",
+  110, "Planes multidisciplinarios o generales del campo de ciencias de la educación y pedagogía",
+  111, "Diseño curricular y pedagogía",
+  112, "Planeación, evaluación e investigación educativa",
+  113, "Orientación e intervención educativa",
+  114, "Tecnología y comunicación educativa",
+  115, "Ciencias de la educación",
+  120, "Planes multidisciplinarios o generales del campo de formación docente",
+  121, "Formación docente en educación básica, nivel preescolar",
+  122, "Formación docente en educación básica, nivel primaria",
+  123, "Formación docente en educación básica, nivel secundaria",
+  124, "Formación docente en educación media superior",
+  125, "Formación docente en educación superior",
+  126, "Formación docente en la enseñanza de asignaturas específicas",
+  127, "Formación docente en otros servicios educativos",
+  210, "Planes multidisciplinarios o generales del campo de artes",
+  211, "Bellas artes",
+  212, "Artes escénicas",
+  213, "Música",
+  214, "Tecnologías audiovisuales para medios de comunicación",
+  215, "Diseño y comunicación gráfica y editorial",
+  216, "Diseño industrial, de moda e interiores",
+  217, "Artesanía tradicional y manualidades",
+  220, "Planes multidisciplinarios o generales del campo de humanidades",
+  221, "Teología",
+  222, "Adquisición de idiomas extranjeros",
+  223, "Literatura",
+  224, "Lingüística",
+  225, "Historia y arqueología",
+  226, "Filosofía y ética",
+  310, "Planes multidisciplinarios o generales del campo de ciencias sociales y estudios del comportamiento",
+  311, "Psicología",
+  312, "Sociología y antropología",
+  313, "Ciencias políticas",
+  314, "Economía",
+  315, "Trabajo y atención social",
+  321, "Comunicación y periodismo",
+  322, "Biblioteconomía y archivonomía",
+  331, "Derecho",
+  332, "Criminología y criminalística",
+  410, "Planes multidisciplinarios o generales del campo de negocios y contabilidad",
+  411, "Negocios y comercio",
+  412, "Mercadotecnia y publicidad",
+  413, "Finanzas, banca y seguros",
+  414, "Contabilidad y fiscalización",
+  420, "Planes multidisciplinarios o generales del campo de administración y gestión",
+  421, "Administración de empresas",
+  422, "Administración turística y de restaurantes",
+  423, "Administración pública",
+  424, "Administración en el ámbito de la ingeniería y la construcción",
+  425, "Administración en los campos de la educación, salud, deporte, agronomía y las artes y humanidades",
+  510, "Planes multidisciplinarios o generales del campo de ciencias biológicas y ambientales",
+  511, "Biología",
+  512, "Bioquímica y biofísica",
+  513, "Ecología y ciencias ambientales",
+  520, "Planes multidisciplinarios o generales del campo de ciencias físicas, químicas y de la tierra",
+  521, "Física y astronomía",
+  522, "Química",
+  523, "Ciencias de la tierra y de la atmósfera",
+  531, "Matemáticas",
+  532, "Estadística y actuaría",
+  610, "Planes multidisciplinarios o generales del campo de innovación en tecnologías de la información y l",
+  611, "Ciencias computacionales",
+  612, "Desarrollo de hardware",
+  613, "Desarrollo de software",
+  620, "Planes multidisciplinarios o generales del campo de implementación de las tecnologías de la informa",
+  621, "Telecomunicaciones",
+  622, "Informática",
+  623, "Soporte y servicios de mantenimiento a las tecnologías de la información y comunicación",
+  710, "Planes multidisciplinarios o generales del campo de ingeniería mecánica, eléctrica, electrónica, química y profesiones afines",
+  711, "Mecánica y profesiones afines al trabajo metálico",
+  712, "Electricidad y generación de energía",
+  713, "Electrónica, automatización y aplicaciones de la mecánica eléctrica",
+  714, "In
+  geniería de procesos químicos",
+  715, "Vehículos, barcos y aeronaves motorizadas",
+  716, "Tecnología para la protección del medio ambiente",
+  717, "Ingeniería industrial",
+  720, "Planes multidisciplinarios o generales del campo de manufacturas y procesos",
+  721, "Industria de la alimentación",
+  722, "Industria textil, del calzado y piel",
+  723, "Industrias de materiales diversos (cerámica, madera, plástico y vidrio)",
+  724, "Industria de la minería, extracción y metalurgia",
+  731, "Arquitectura y urbanismo",
+  732, "Construcción e ingeniería civil",
+  810, "Planes multidisciplinarios o generales del campo de agronomía, horticultura, silvicultura y pesca",
+  811, "Producción y explotación agrícola y ganadera",
+  812, "Horticultura",
+  813, "Silvicultura",
+  814, "Pesca y acuacultura",
+  821, "Veterinaria",
+  911, "Medicina general",
+  912, "Medicina homeopática",
+  921, "Enfermería general y obstetricia",
+  922, "Enfermería de especialidad",
+  931, "Estomatología y odontología general",
+  932, "Estomatología y odontología de especialidad",
+  940, "Planes multidisciplinarios o generales del campo de terapia, rehabilitación y tratamientos alternativos",
+  941, "Terapia y rehabilitación",
+  942, "Nutrición",
+  943, "Tratamientos alternativos y acupuntura",
+  950, "Planes multidisciplinarios o generales del campo de disciplinas auxiliares para la salud",
+  951, "Atención prehospitalaria y emergencias médicas",
+  952, "Biomedicina",
+  953, "Diagnóstico médico y tecnología del tratamiento",
+  954, "Farmacia",
+  955, "Audiometría y optometría",
+  956, "Salud pública",
+  1010, "Planes multidisciplinarios o generales del campo de servicios personales y deportes",
+  1011, "Deportes",
+  1012, "Servicios funerarios",
+  1013, "Servicios de cuidado personal y belleza",
+  1014, "Servicios de apoyo y asistencia administrativa",
+  1015, "Gastronomía y servicios de alimentos",
+  1016, "Hospitalidad y turismo",
+  1021, "Servicios de transporte",
+  1031, "Seguridad para el trabajo",
+  1041, "Seguridad pública",
+  1042, "Servicios militares",
+  9999, "No identificado"
+)
+```
+
+```{r}
+
+Lista <- tibble(folio = c(
+  111, 112, 114, 115, 120, 121, 122, 123, 124, 125, 126, 127, 
+  212, 214, 215, 216, 222, 223, 224, 225, 226, 310, 
+  311, 312, 313, 314, 315, 321, 322, 331, 332, 411, 412, 
+  413, 414, 420, 421, 422, 423, 424, 425, 510, 511, 512, 
+  513, 520, 522, 523, 611, 620, 621, 622, 710, 711, 712, 
+  713, 714, 716, 717, 721, 731, 732, 810, 811, 813, 821, 
+  911, 921, 922, 931, 932, 941, 942, 1010, 1011, 1015, 
+  1016, 9999
+))
+```
+
+```{r}
+lista_2 <- Lista%>%
+  inner_join(Licenciatura, by = "folio")
+```
+
+```{r}
+lista_2 <- lista_2%>%
+rename(Clasificacion = folio)
+```
+
+## Tibbles Agrupados según el Tipo de Estudios:
+
+```{r}
+estudios_2023_1 <- estudios_2023_1%>%
+  left_join(lista_2, by="Clasificacion")
+
+reactable(estudios_2023_1)
+```
+
+### Tibble Agrupado por Sexo, Rango de Estudios y Licenciatura:
+
+```{r}
+estudios_2023_SREL <- estudios_2023_1%>%
+  group_by(Sexo, Rango_Estudios, Carrera)%>%
+  reframe(Casos=sum(Casos), Proporcion=sum(Proporcion))%>%
+  arrange(desc(Proporcion))
+
+reactable(estudios_2023_SREL)
+```
+
+### Tibble Agrupado por Rango de Estudios y Carrera:
+
+```{r}
+ estudios_2023_1%>%
+  group_by(Rango_Estudios, Carrera)%>%
+  reframe(Casos=sum(Casos), Proporcion=sum(Proporcion))%>%
+  arrange(desc(Proporcion))
+```
+
+```{r}
+estudios_2023_2 <- estudios_2023 %>%
+  select(entidad_federativa, sexo_inclusivo, grado_estudios_ni, estatus_estudios)%>%
+  rename(Entidad = entidad_federativa, Sexo = sexo_inclusivo, Rango_Estudios = grado_estudios_ni, Estatus = estatus_estudios)%>%
+  mutate(Sexo = case_when(
+    Sexo == 0 ~ "No aplica",
+    Sexo == 1 ~ "Hombre",
+    Sexo == 2 ~ "Mujer",
+    Sexo == 3 ~ "No binario",
+    Sexo == 9 ~ "No se sabe",
+    Sexo == 97 ~ "No cuenta con elementos para responder",
+    Sexo == 98 ~ "Información no disponible"
+  )) %>%
+  mutate(Rango_Estudios = case_when(
+    Rango_Estudios == 0 ~ "No aplica",
+    Rango_Estudios == 1 ~ "Ninguno",
+    Rango_Estudios == 2 ~ "Preescolar o primaria",
+    Rango_Estudios == 3 ~ "Secundaria",
+    Rango_Estudios == 4 ~ "Preparatoria",
+    Rango_Estudios == 5 ~ "Carrera técnica o carrera comercial",
+    Rango_Estudios == 6 ~ "Licenciatura",
+    Rango_Estudios == 7 ~ "Maestría",
+    Rango_Estudios == 8 ~ "Doctorado",
+    Rango_Estudios == 9 ~ "No se sabe",
+    Rango_Estudios == 99 ~ "No cuenta con elementos para responder",
+    Rango_Estudios == 996 ~ "No publicable por el principio de confidencialidad o por reserva de información",
+    Rango_Estudios == 997 ~ "No cuenta con elementos para responder",
+    Rango_Estudios == 998 ~ "Información no disponible"
+  )) %>%
+  mutate(Estatus = case_when(
+    Estatus == 0 ~ "No aplica",
+    Estatus == 1 ~ "Cursando",
+    Estatus == 2 ~ "Inconcluso",
+    Estatus == 3 ~ "Concluido",
+    Estatus == 4 ~ "Titulado",
+    Estatus == 9 ~ "No Identificado",
+    Estatus == 96 ~ "No publicable por el principio de confidencialidad o por reserva de información",
+    Estatus == 97 ~ "No cuenta con elementos para responder",
+    Estatus == 98 ~ "Información no disponible"
+  ))%>%
+  group_by(Entidad, Sexo, Rango_Estudios, Estatus)%>%  
+  reframe(Casos = n())%>%
+  mutate(Proporcion = Casos/sum(Casos)*100)
+
+reactable(estudios_2023_2)
+```
+
+### Tibble Agrupado por Sexo, Rango de Estudios y Estatus:
+
+```{r}
+estudios_2021_SREE_1 <- estudios_2023_2 %>%
+  group_by(Sexo, Rango_Estudios, Estatus) %>%
+  reframe(Casos = sum(Casos, na.rm = TRUE), Proporcion = sum(Proporcion))%>%
+  arrange(desc(Proporcion))
+
+reactable(estudios_2021_SREE_1)
+```
+
+### Tibble Agrupado por Rango de Estudios y Estatus:
+
+```{r}
+estudios_2021_REE <- estudios_2023_2 %>%
+  group_by(Rango_Estudios, Estatus) %>%
+  reframe(Casos = sum(Casos, na.rm = TRUE), Proporcion = sum(Proporcion))%>%
+  arrange(desc(Proporcion))
+
+reactable(estudios_2021_REE)
+```
+
+### Tibble Agrupado por Rango de Estudios:
+
+```{r}
+estudios_2021_RE <- estudios_2023_2 %>%
+  group_by(Rango_Estudios) %>%
+  reframe(Casos = sum(Casos, na.rm = TRUE), Proporcion = sum(Proporcion))%>%
+  arrange(desc(Proporcion))
+
+reactable(estudios_2021_RE)
+```

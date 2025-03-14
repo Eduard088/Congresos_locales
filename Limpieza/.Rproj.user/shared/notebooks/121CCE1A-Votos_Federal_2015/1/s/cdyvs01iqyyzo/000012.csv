@@ -1,0 +1,4 @@
+"0","integrantes2015 <- integrantes2015%>%"
+"0","filter(Año == 2015)"
+"0",""
+"0","reactable(integrantes2015)"

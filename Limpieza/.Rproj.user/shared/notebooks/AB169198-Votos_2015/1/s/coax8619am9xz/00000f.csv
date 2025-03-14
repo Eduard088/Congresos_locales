@@ -1,0 +1,5 @@
+"0","integrantes2015 <- integrantes2015%>%"
+"0","mutate(Sexo = case_when(Sexo == ""legele1"" ~ ""Hombres"","
+"0","                          Sexo == ""legele2"" ~ ""Mujeres"","
+"0","                          Sexo == ""legele4"" ~ ""Hombres"","
+"0","                          Sexo == ""legele5"" ~ ""Mujeres""))"

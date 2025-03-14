@@ -1,0 +1,68 @@
+/* Definición de la animación moveRight */
+@keyframes moveRight {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(100px); } /* Ajusta este valor según tus necesidades */
+}
+
+/* Estilos generales de la tabla */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 25px 0;
+  font-size: 18px;
+  text-align: left;
+  background-color: #f5f5f5; /* Fondo general de la tabla */
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+/* Estilos de encabezados de tabla */
+table th {
+  background-color: #007bff; /* Color azul claro para el encabezado */
+  color: white;
+  padding: 12px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-size: 16px;
+}
+
+/* Estilo de celdas */
+table td {
+  padding: 10px;
+  color: #333;
+  border-bottom: 1px solid #ddd;
+}
+
+/* Alternancia de colores en las filas */
+table tr:nth-child(even) {
+  background-color: #e9f0fa; /* Color azul claro */
+}
+
+table tr:nth-child(odd) {
+  background-color: #ffffff; /* Blanco */
+}
+
+/* Estilo de hover: cambiar el fondo al pasar el cursor por las celdas */
+table td:hover {
+  background-color: #cfe2ff; /* Color azul claro al pasar el cursor */
+  color: #000;
+}
+
+/* Estilo de hover para la fila completa */
+table tr:hover {
+  background-color: #b8daff; /* Color azul más intenso para resaltar la fila */
+}
+
+/* Estilos de bordes de la tabla */
+table, th, td {
+  border: 1px solid #ddd;
+}
+
+/* Hacer que las tablas sean responsivas en pantallas pequeñas */
+@media screen and (max-width: 600px) {
+  table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+}

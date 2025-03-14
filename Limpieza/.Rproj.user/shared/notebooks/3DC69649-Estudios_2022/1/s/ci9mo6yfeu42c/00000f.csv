@@ -1,0 +1,14 @@
+"0","estudios_2023 <- read_csv(""C:/Users/Eduardo/Documents/PC/SECCION1/DOCS/Tesis/Estudios/estudios_2022.csv"")"
+"2","Aviso: [38;5;255mOne or more parsing issues, call `problems()` on your data frame for details, e.g.:
+  dat <- vroom(...)
+  problems(dat)[39m"
+"2","[1mRows: [22m[34m16197[39m [1mColumns: [22m[34m39[39m"
+"2","[36m──[39m [1mColumn specification[22m [36m───────────────────────────────────────────────────────────────────────────────[39m
+[1mDelimiter:[22m "",""
+[31mchr[39m (15): id_personal_apoyo, nombre_personal_apoyo_1, nombre_personal_apoyo_2, nombre_personal_apoy...
+[32mdbl[39m (18): entidad_federativa, periodo_reportado, sexo_inclusivo, regimen_contratacion, institucione...
+[33mlgl[39m  (6): lenguas_indigenas_1, lenguas_indigenas_2, lenguas_indigenas_3, pueblos_indigenas, condici..."
+"2","
+[36mℹ[39m Use `spec()` to retrieve the full column specification for this data.
+[36mℹ[39m Specify the column types or set `show_col_types = FALSE` to quiet this message."
+"0","reactable(estudios_2023)"

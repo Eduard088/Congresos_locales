@@ -1,0 +1,4 @@
+"0","dipfed2021_1_f1 <- dipfed2021_1_f1%>%"
+"0","gather(key = Sexo, value = Curules, Hombres:Mujeres)"
+"0",""
+"0","reactable(dipfed2021_1_f1)"

@@ -1,0 +1,297 @@
+---
+title: "Edad de los Legisladores 20"
+css: custom.css
+---
+
+## Otros Datos Sobre las Personas Legisladoras en México:
+
+En la presente sección se presenta la limpieza y transformación de los datos concernientes a las características demográficas de los legisladores locales en México al finalizar el censo, en su edición 2022. Los datos obtenidos se utilizan en la tesis según el apartado que corresponda.
+
+```{r}
+library(tidyverse)
+library(readxl)
+library(rmarkdown)
+library(reactable)
+options(scipen=999)
+options(digits=2)
+```
+
+### Transformación de Datos:
+
+```{r}
+edades_2022 <- read_csv("C:/Users/Eduardo/Documents/PC/SECCION1/DOCS/Tesis/Edad/edad_2022.csv")
+reactable(edades_2022)
+```
+
+```{r}
+edades_2022 <- edades_2022%>%
+  select(entidad_federativa, sexo_inclusivo, preg_salto_1, preg_salto_2, pueblos_indigenas, preg_salto_3, condicion_discapacidad_1, condicion_discapacidad_2, condicion_discapacidad_3, preg_salto_4, empleo_anterior, antiguedad_1, antiguedad_2)%>%
+  rename(Entidad= entidad_federativa, Sexo = sexo_inclusivo, Lengua_Indigena= preg_salto_1, Pueblo_Indigena= preg_salto_2, Pertenencia = pueblos_indigenas, Discapacidad = preg_salto_3, Tipo_1= condicion_discapacidad_1, Tipo_2 = condicion_discapacidad_2, Tipo_3 = condicion_discapacidad_3, Diversidad_S = preg_salto_4, Empleo_Anterior = empleo_anterior, Antiguedad_SP = antiguedad_1, Antiguedad_LEG = antiguedad_2)
+
+reactable(edades_2022)
+
+```
+
+```{r}
+
+colnames(edades_2022)
+
+```
+
+```{r}
+edades_2022 <- edades_2022%>%
+  mutate(Sexo= case_when(
+    Sexo == 0 ~ "No aplica",
+    Sexo == 1 ~ "Hombre",
+    Sexo == 2 ~ "Mujer",
+    Sexo == 3 ~ "No Binario",
+    Sexo == 9 ~ "No sabe",
+    Sexo == 96 ~ "No publicable por el principio de confidencialidad o por reserva de información",
+    Sexo == 97 ~ "No cuenta con elementos para responder",
+    Sexo == 98 ~ "Información no disponible"))%>%
+  mutate(Lengua_Indigena = case_when(
+Lengua_Indigena == 0 ~ "No aplica",
+Lengua_Indigena == 1 ~ "Sí",
+Lengua_Indigena == 2 ~ "No",
+Lengua_Indigena == 9 ~ "No identificado",
+Lengua_Indigena == 96 ~ "No publicable por el principio de confidencialidad o por reserva de información",
+Lengua_Indigena == 97 ~ "No cuenta con elementos para responder",
+Lengua_Indigena == 98 ~ "Información no disponible"
+  ))
+
+reactable(edades_2022)
+```
+
+```{r}
+edades_2022 <- edades_2022 %>%
+  mutate(Pertenencia = replace_na(Pertenencia, 99))
+
+```
+
+```{r}
+edades_2022 <- edades_2022 %>%
+  mutate(Pueblo_Indigena = case_when(
+    Pueblo_Indigena == 0 ~ "No aplica",
+    Pueblo_Indigena == 1 ~ "Sí",
+    Pueblo_Indigena == 2 ~ "No",
+    Pueblo_Indigena == 9 ~ "No identificado",
+    Pueblo_Indigena == 96 ~ "No publicable por el principio de confidencialidad o por reserva de información",
+    Pueblo_Indigena == 97 ~ "No cuenta con elementos para responder",
+    Pueblo_Indigena == 98 ~ "Información no disponible"
+  ))%>%
+  mutate(Pertenencia = case_when(
+Pertenencia == 0 ~ "No aplica",
+Pertenencia == 1 ~ "Chinanteco",
+Pertenencia == 2 ~ "Ch'ol",
+Pertenencia == 3 ~ "Cora",
+Pertenencia == 4 ~ "Huasteco",
+Pertenencia == 5 ~ "Huichol",
+Pertenencia == 6 ~ "Maya",
+Pertenencia == 7 ~ "Mayo",
+Pertenencia == 8 ~ "Mazahua",
+Pertenencia == 9 ~ "Mazateco",
+Pertenencia == 10	~ "Mixe",
+Pertenencia == 11 ~ "Mixteco",
+Pertenencia == 12 ~ "Náhuatl",
+Pertenencia == 13 ~ "Otomí",
+Pertenencia == 14 ~ "Tarasco/Purépecha",
+Pertenencia == 15 ~ "Tarahumara",
+Pertenencia == 16 ~ "Tepehuano",
+Pertenencia == 17 ~ "Tlapaneco",
+Pertenencia == 18 ~ "Totonaco",
+Pertenencia == 19 ~ "Tseltal",
+Pertenencia == 20 ~ "Tsotsil",
+Pertenencia == 21 ~ "Yaqui",
+Pertenencia == 22 ~ "Zapoteco",
+Pertenencia == 23 ~ "Zoque",
+Pertenencia == 24 ~ "Otro pueblo indígena",
+Pertenencia == 25 ~ "Pueblo indígena no identificado",
+Pertenencia == 26 ~ "Ninguno",
+Pertenencia == 99 ~ "No identificado",
+Pertenencia == 996 ~ "No publicable por el principio de confidencialidad o por reserva de información",
+Pertenencia == 997 ~ "No cuenta con elementos para responder",
+Pertenencia == 998 ~ "Información no disponible"
+  ))%>%
+  mutate(Discapacidad = case_when(
+Discapacidad == 0 ~ "No aplica",
+Discapacidad == 1 ~ "Sí",
+Discapacidad == 2 ~ "No",
+Discapacidad == 9 ~ "No identificado",
+Discapacidad == 96 ~ "No publicable por el principio de confidencialidad o por reserva de información",
+Discapacidad == 97 ~ "No cuenta con elementos para responder",
+Discapacidad == 98 ~ "Información no disponible"
+  ))%>%
+  mutate(Tipo_1 = case_when(
+Tipo_1 == 0 ~ "No aplica",
+Tipo_1 == 1 ~ "Dificultad o impedimento para caminar, subir o bajar escalones usando sus piernas",
+Tipo_1 == 2 ~ "Dificultad o impedimento para ver, aun usando lentes",
+Tipo_1 == 3 ~ "Dificultad o impedimento para mover o usar sus brazos o manos",
+Tipo_1 == 4 ~ "Dificultad o impedimento para aprender, recordar o concentrarse por alguna condición intelectual, por ejemplo síndrome de Down",
+Tipo_1 == 5 ~ "Dificultad o impedimento para oír, aun usando aparato auditivo",
+Tipo_1 == 6 ~ "Dificultad o impedimento para hablar o comunicarse (entender o ser entendido o entendida por otras personas)",
+Tipo_1 == 7 ~ "Dificultad o impedimento para bañarse, vestirse o comer",
+Tipo_1 == 8 ~ "Dificultad o impedimento para realizar sus actividades diarias por alguna condicional emocional o mental, por ejemplo esquizofrenia o depresión",
+Tipo_1 == 9 ~ "Otro tipo de discapacidad",
+Tipo_1 == 10 ~ "Discapacidad no identificada",
+Tipo_1 == 11 ~ "Más de un tipo de discapacidad",
+Tipo_1 == 12 ~ "Ninguna",
+Tipo_1 == 99 ~ "No identificado",
+Tipo_1 == 996 ~ "No publicable por el principio de confidencialidad o por reserva de información",
+Tipo_1 == 997 ~ "No cuenta con elementos para responder",
+Tipo_1 == 998 ~ "Información no disponible"
+  ))%>%
+  mutate(Tipo_2 = case_when(
+Tipo_2 == 0 ~ "No aplica",
+Tipo_2 == 1 ~ "Dificultad o impedimento para caminar, subir o bajar escalones usando sus piernas",
+Tipo_2 == 2 ~ "Dificultad o impedimento para ver, aun usando lentes",
+Tipo_2 == 3 ~ "Dificultad o impedimento para mover o usar sus brazos o manos",
+Tipo_2 == 4 ~ "Dificultad o impedimento para aprender, recordar o concentrarse por alguna condición intelectual, por ejemplo síndrome de Down",
+Tipo_2 == 5 ~ "Dificultad o impedimento para oír, aun usando aparato auditivo",
+Tipo_2 == 6 ~ "Dificultad o impedimento para hablar o comunicarse (entender o ser entendido o entendida por otras personas)",
+Tipo_2 == 7 ~ "Dificultad o impedimento para bañarse, vestirse o comer",
+Tipo_2 == 8 ~ "Dificultad o impedimento para realizar sus actividades diarias por alguna condicional emocional o mental, por ejemplo esquizofrenia o depresión",
+Tipo_2 == 9 ~ "Otro tipo de discapacidad",
+Tipo_2 == 10 ~ "Discapacidad no identificada",
+Tipo_2 == 11 ~ "Más de un tipo de discapacidad",
+Tipo_2 == 12 ~ "Ninguna",
+Tipo_2 == 99 ~ "No identificado",
+Tipo_2 == 996 ~ "No publicable por el principio de confidencialidad o por reserva de información",
+Tipo_2 == 997 ~ "No cuenta con elementos para responder",
+Tipo_2 == 998 ~ "Información no disponible"
+  ))%>%
+  mutate(Tipo_3 = case_when(
+Tipo_3 == 0 ~ "No aplica",
+Tipo_3 == 1 ~ "Dificultad o impedimento para caminar, subir o bajar escalones usando sus piernas",
+Tipo_3 == 2 ~ "Dificultad o impedimento para ver, aun usando lentes",
+Tipo_3 == 3 ~ "Dificultad o impedimento para mover o usar sus brazos o manos",
+Tipo_3 == 4 ~ "Dificultad o impedimento para aprender, recordar o concentrarse por alguna condición intelectual, por ejemplo síndrome de Down",
+Tipo_3 == 5 ~ "Dificultad o impedimento para oír, aun usando aparato auditivo",
+Tipo_3 == 6 ~ "Dificultad o impedimento para hablar o comunicarse (entender o ser entendido o entendida por otras personas)",
+Tipo_3 == 7 ~ "Dificultad o impedimento para bañarse, vestirse o comer",
+Tipo_3 == 8 ~ "Dificultad o impedimento para realizar sus actividades diarias por alguna condicional emocional o mental, por ejemplo esquizofrenia o depresión",
+Tipo_3 == 9 ~ "Otro tipo de discapacidad",
+Tipo_3 == 10 ~ "Discapacidad no identificada",
+Tipo_3 == 11 ~ "Más de un tipo de discapacidad",
+Tipo_3 == 12 ~ "Ninguna",
+Tipo_3 == 99 ~ "No identificado",
+Tipo_3 == 996 ~ "No publicable por el principio de confidencialidad o por reserva de información",
+Tipo_3 == 997 ~ "No cuenta con elementos para responder",
+Tipo_3 == 998 ~ "Información no disponible"
+  ))%>%
+  mutate(Diversidad_S = case_when(
+Diversidad_S == 0 ~ "No aplica",
+Diversidad_S == 1 ~ "Sí",
+Diversidad_S == 2 ~ "No",
+Diversidad_S == 9 ~ "No identificado",
+Diversidad_S == 96 ~ "No publicable por el principio de confidencialidad o por reserva de información",
+Diversidad_S == 97 ~ "No cuenta con elementos para responder",
+Diversidad_S == 98 ~ "Información no disponible"
+  ))%>%
+  mutate(Empleo_Anterior = case_when(
+Empleo_Anterior == 0 ~ "No aplica",
+Empleo_Anterior == 1  ~ "Legislador federal",
+Empleo_Anterior == 2 ~ "Legislador estatal (reelección)",
+Empleo_Anterior == 3 ~ "Legislador estatal (de otra entidad federativa)",
+Empleo_Anterior == 4 	~ "Gobierno federal",
+Empleo_Anterior == 5 ~ "Gobierno estatal",
+Empleo_Anterior == 6 ~	"Gobierno municipal",
+Empleo_Anterior == 7 ~ "Sindico(a)/ regidor(a)",
+Empleo_Anterior == 8 ~ "Negocio propio",
+Empleo_Anterior == 9 ~ "Persona empleada del sector privado",
+Empleo_Anterior == 10 ~ "Representación sindical",
+Empleo_Anterior == 11 ~ "Cargo en partido político",
+Empleo_Anterior == 12 ~ "Sector social (Organizaciones de la sociedad civil)",
+Empleo_Anterior == 13 ~ "Academia (Profesor(a)/ investigador(a) de tiempo completo)",
+Empleo_Anterior == 14 ~ "Es primer trabajo",
+Empleo_Anterior == 15	~ "Otro tipo de empleo",
+Empleo_Anterior == 99 ~ "No identificado",
+Empleo_Anterior == 996 ~ "No publicable por el principio de confidencialidad o por reserva de información",
+Empleo_Anterior == 997 ~ "No cuenta con elementos para responder",
+Empleo_Anterior == 998 ~ "Información no disponible"
+  ))
+
+reactable(edades_2022)
+
+```
+
+```{r}
+edades_2022 <- edades_2022 %>%
+  mutate(
+    Tipo_1 = replace_na(Tipo_1, "No aplica"),
+    Tipo_2 = replace_na(Tipo_2, "No aplica"),
+    Tipo_3 = replace_na(Tipo_3, "No aplica")
+  )
+
+```
+
+### Tibble por Entidad Federativa, Sexo y Pertenencia a Comunidades Indigenas:
+
+```{r}
+Entidades_2022 <- edades_2022%>%
+  group_by(Entidad, Sexo, Lengua_Indigena, Pueblo_Indigena, Pertenencia)%>%
+  reframe(Casos=n())%>%
+  mutate(Proporcion = Casos/sum(Casos)*100)
+
+reactable(Entidades_2022)
+```
+
+### Tibble Agrupado por Entidad, Sexo y Empleo Anterior:
+
+```{r}
+edades_2022_EMP <- edades_2022%>%
+  group_by(Entidad, Sexo, Empleo_Anterior)%>%
+  reframe(Casos=n())%>%
+  mutate(Proporcion = Casos/sum(Casos)*100)
+
+reactable(edades_2022_EMP)
+```
+
+### Tibble Agrupado por Entidad, Sexo y Antigüedad en el Servicio Público:
+
+```{r}
+edades_2022_SP <- edades_2022%>%
+  group_by(Entidad, Sexo, Antiguedad_SP)%>%
+  reframe(Casos=n())%>%
+  mutate(Proporcion = Casos/sum(Casos)*100)
+
+reactable(edades_2022_SP)
+```
+
+### Tibble Agrupado por Entidad, Sexo y Antigüedad en las Legislaturas:
+
+```{r}
+edades_2022_LEG<- edades_2022%>%
+  group_by(Entidad, Sexo, Antiguedad_LEG)%>%
+  reframe(Casos=n())%>%
+  mutate(Proporcion = Casos/sum(Casos)*100)
+
+reactable(edades_2022_LEG)
+```
+
+### Tibble Agrupado por Entidad, Sexo y Discapacidad:
+
+```{r}
+edades_2022_DISC<- edades_2022%>%
+  group_by(Entidad, Sexo, Discapacidad, Tipo_1, Tipo_2, Tipo_3)%>%
+  reframe(Casos=n())%>%
+  mutate(Proporcion = Casos/sum(Casos)*100)
+reactable(edades_2022_DISC)
+```
+
+### Tibble Agrupado por Diversidad Sexual:
+
+```{r}
+edades_2022_Diversidad_S <- edades_2022%>%
+  group_by(Entidad, Sexo, Diversidad_S)%>%
+  reframe(Casos=n())%>%
+  mutate(Proporcion = Casos/sum(Casos)*100)
+
+reactable(edades_2022_Diversidad_S)
+```
+
+```{r}
+edades_2022_Diversidad_S%>%
+  filter(Diversidad_S == "Sí")%>%
+  group_by(Entidad, Sexo, Diversidad_S)%>%
+  reframe(Casos=sum(Casos), Proporcion=sum(Proporcion))
+```

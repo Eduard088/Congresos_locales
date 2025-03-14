@@ -1,0 +1,2 @@
+"0","congreso_local_2015l <- congreso_local_2015%>%"
+"0","    gather(key = Partido, value=Votos, PAN:CAND_IND10)"

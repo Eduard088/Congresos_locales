@@ -1,0 +1,1 @@
+"0","edades_2016 <- edades_2016[!is.na(edades_2016$Casos),]"

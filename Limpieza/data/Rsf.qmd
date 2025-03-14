@@ -1,0 +1,73 @@
+---
+title: "Random Forest"
+css: custom.css
+---
+
+El **Random Survival Forest (RSF)** es una extensión del algoritmo Random Forest, diseñado para trabajar con datos de supervivencia. Este modelo es especialmente útil en situaciones donde los datos incluyen información de tiempo hasta un evento (como muerte, recaída, fallas de un sistema) y pueden contener observaciones censuradas.
+
+#### Contexto y Problema
+
+En análisis de supervivencia, el objetivo principal es modelar el tiempo hasta que ocurra un evento específico. A diferencia de los modelos tradicionales como la regresión de Cox, que requiere supuestos de proporcionalidad de riesgos, RSF es no paramétrico y no depende de estos supuestos, lo que lo hace más flexible.
+
+#### ¿Cómo Funciona el RSF?
+
+1.  **Construcción de Árboles de Decisión**\
+    Similar al Random Forest clásico, RSF construye múltiples árboles de decisión basados en muestras bootstrap del conjunto de datos.
+
+2.  **División Basada en Riesgo**\
+    Las divisiones en cada nodo se realizan maximizando una métrica específica para datos de supervivencia, como el índice de log-rank o la varianza de los tiempos de supervivencia.
+
+3.  **Predicción de Supervivencia**\
+    Cada árbol genera un estimado de la función de supervivencia, que se combina a través de un promedio para obtener el estimado del modelo global.
+
+4.  **Importancia de Variables**\
+    RSF evalúa la importancia de las variables calculando cuánto mejora el modelo al incluir cada predictor.
+
+#### Ventajas del RSF
+
+1.  **No depende de supuestos fuertes:** A diferencia de los modelos de Cox, no requiere que los riesgos proporcionales sean válidos.
+
+2.  **Maneja censura de datos:** Puede trabajar con datos donde no se observa el evento para algunas observaciones.
+
+3.  **Identificación de relaciones no lineales:** Puede capturar relaciones complejas entre predictores y tiempos de supervivencia.
+
+4.  **Robustez:** Es menos susceptible a datos atípicos o ruido.
+
+#### Componentes Clave
+
+1.  **Función de Supervivencia Censurada (**S(t)S(t)S(t))\
+    La probabilidad de que el evento no haya ocurrido hasta el tiempo ttt.
+
+    S(t)=P(T\>t)S(t) = P(T \> t)S(t)=P(T\>t)
+
+    Donde TTT es el tiempo hasta el evento.
+
+2.  **Hazard Function (**h(t)h(t)h(t))\
+    La tasa instantánea de ocurrencia del evento en el tiempo ttt, dada la supervivencia hasta ese momento.
+
+3.  **Curvas de Supervivencia Individuales**\
+    RSF permite estimar curvas de supervivencia específicas para cada individuo, basándose en sus valores de predictores.
+
+#### Ejemplos de Aplicación
+
+-   **Medicina:** Modelar la probabilidad de supervivencia de pacientes con cáncer basándose en variables como edad, tratamiento y factores genéticos.
+
+-   **Seguros:** Estimar el tiempo hasta que un cliente cancele su póliza.
+
+-   **Industria:** Analizar el tiempo hasta que un equipo mecánico falle, basado en condiciones de operación.
+
+#### Métricas de Evaluación
+
+1.  **Índice C-Index (Concordancia):**\
+    Mide la capacidad del modelo para predecir correctamente el orden relativo de los tiempos de supervivencia.
+
+2.  **Error de Brier:**\
+    Evalúa la precisión de las probabilidades estimadas de supervivencia a lo largo del tiempo.
+
+#### ¿Cuándo Usar RSF?
+
+1.  Cuando se dispone de datos censurados.
+
+2.  Cuando las relaciones entre los predictores y el tiempo de supervivencia son complejas y no lineales.
+
+3.  Cuando se quiere evitar supuestos fuertes de modelos como la regresión de Cox.

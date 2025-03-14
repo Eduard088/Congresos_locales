@@ -1,0 +1,2 @@
+"0","congreso2015 <- congreso2015%>%"
+"0","    mutate(Proporcion= (Votos/Votos1)*(100))"

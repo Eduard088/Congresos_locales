@@ -1,0 +1,1 @@
+"0","congreso_local_2015l <- congreso_local_2015l[!is.na(congreso_local_2015l$Votos),]"

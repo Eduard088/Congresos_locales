@@ -1,0 +1,183 @@
+---
+title: "Edad de los Legisladores 2019"
+css: custom.css
+---
+
+## Edad de las Personas Legisladoras en México:
+
+En la presente sección se presenta la limpieza y transformación de los datos concernientes a las edades de los legisladores locales en México al finalizar el censo, en su edición 2020 Los datos obtenidos se utilizan en la tesis según el apartado que corresponda.
+
+```{r}
+library(tidyverse)
+library(readxl)
+library(rmarkdown)
+library(plotly)
+library(reactable)
+options(scipen=999)
+options(digits=2)
+```
+
+### Transformación de Datos:
+
+```{r}
+edades_2020 <- read_excel("C:/Users/Eduardo/Documents/PC/SECCION1/DOCS/Tesis/Edad/edad_20201.xlsx")
+reactable(edades_2020)
+```
+
+```{r}
+edades_2020 <- edades_2020%>%
+  select(-numeral, -gdoestud_d, -estagrad_b)%>%
+  mutate(sexo_c = case_when(
+    sexo_c == 0 ~ "No aplica",
+    sexo_c == 1 ~ "Hombre",
+    sexo_c == 2 ~ "Mujer",
+    sexo_c == 9 ~ "No sabe",
+    sexo_c == 97 ~ "No cuenta con elementos para responder",
+    sexo_c == 98 ~ "Información no disponible"))%>%
+    rename(Sexo = sexo_c)
+
+reactable(edades_2020)
+```
+
+```{r}
+edades_2020  <- edades_2020%>%
+  filter(edades != "NSS")
+
+reactable(edades_2020)
+```
+
+```{r}
+edades_2020 <- edades_2020 %>%
+  filter(puebindi_b != 0)
+
+edades_2020 <- edades_2020 %>%
+  filter(condisca_b != 0)
+
+reactable(edades_2020)
+```
+
+```{r}
+edades_2020 <- edades_2020%>%
+  mutate(puebindi_b = case_when(
+puebindi_b == 0 ~ "No aplica",
+puebindi_b == 1 ~ "Chinanteco",
+puebindi_b == 2 ~ "Ch'ol",
+puebindi_b == 3 ~ "Cora",
+puebindi_b == 4 ~ "Huasteco",
+puebindi_b == 5 ~ "Huichol",
+puebindi_b == 6 ~ "Maya",
+puebindi_b == 7 ~ "Mayo",
+puebindi_b == 8 ~ "Mazahua",
+puebindi_b == 9 ~ "Mazateco",
+puebindi_b == 10 ~ "Mixe",
+puebindi_b == 11 ~ "Mixteco",
+puebindi_b == 12 ~ "Náhuatl",
+puebindi_b == 13 ~ "Otomí",
+puebindi_b == 14 ~ "Tarasco/Purépecha",
+puebindi_b == 15 ~ "Tarahumara",
+puebindi_b == 16 ~ "Tepehuano",
+puebindi_b == 17 ~ "Tlapaneco",
+puebindi_b == 18 ~ "Totonaco",
+puebindi_b == 19 ~ "Tseltal",
+puebindi_b == 20 ~ "Tsotsil",
+puebindi_b == 21 ~ "Yaqui",
+puebindi_b == 22 ~ "Zapoteco",
+puebindi_b == 23 ~ "Zoque",
+puebindi_b == 24 ~ "Otro",
+puebindi_b == 25 ~ "Ninguno",
+puebindi_b == 99 ~ "No se sabe",
+puebindi_b == 997 ~ "No cuenta con elementos para responder",
+puebindi_b == 998 ~ "Información no disponible"
+  ))
+
+reactable(edades_2020)
+```
+
+```{r}
+edades_2020 <- edades_2020%>%
+  mutate(condisca_b = case_when(
+condisca_b == 0 ~ "No aplica",
+condisca_b == 1 ~ "Dificultad o impedimento para caminar, subir o bajar escalones usando sus piernas",
+condisca_b == 2 ~ "Dificultad o impedimento para ver, aun usando lentes",
+condisca_b == 3 ~ "Dificultad o impedimento para mover o usar sus brazos o manos",
+condisca_b == 4 ~ "Dificultad o impedimento para aprender, recordar o concentrarse por alguna condición intelectual, por ejemplo síndrome de Down",
+condisca_b == 5 ~ "Dificultad o impedimento para oír, aun usando aparato auditivo",
+condisca_b == 6 ~ "Dificultad o impedimento para hablar o comunicarse (entender o ser entendido(a) por otros)",
+condisca_b == 7 ~ "Dificultad o impedimento para bañarse, vestirse o comer",
+condisca_b == 8 ~ "Dificultad o impedimento para realizar sus actividades diarias por alguna condicional emocional o mental, por ejemplo esquizofrenia o depresión",
+condisca_b == 9 ~ "Otra",
+condisca_b == 10 ~ "Ninguna",
+condisca_b == 99 ~ "No se sabe",
+condisca_b == 997 ~ "No cuenta con elementos para responder",
+condisca_b == 998 ~ "Información no disponible"
+  ))
+
+reactable(edades_2020)
+```
+
+```{r}
+edades_2020 <- edades_2020%>%
+  rename(Origen= puebindi_b, Discapacidad= condisca_b, Entidad= entidad_a)
+reactable(edades_2020)
+```
+
+### Agrupación por Entidad Federativa, Sexo y Edad:
+
+```{r}
+edades_2020_ENT <- edades_2020%>%
+  group_by(Entidad, Sexo)%>%
+  reframe(edades)
+
+reactable(edades_2020_ENT)
+```
+
+```{r}
+edades_2020_ENT <- edades_2020 %>%
+  mutate(Rango_Edad = case_when(
+    edades >= 18 & edades <= 24 ~ "18 a 24",
+    edades >= 25 & edades <= 29 ~ "25 a 29",
+    edades >= 30 & edades <= 34 ~ "30 a 34",
+    edades >= 35 & edades <= 39 ~ "35 a 39",
+    edades >= 40 & edades <= 44 ~ "40 a 44",
+    edades >= 45 & edades <= 49 ~ "45 a 49",
+    edades >= 50 & edades <= 54 ~ "50 a 54",
+    edades >= 55 & edades <= 59 ~ "55 a 59",
+    edades >= 60 ~ "60 o más",
+    TRUE ~ "Sin clasificar"
+  ))
+
+reactable(edades_2020_ENT)
+```
+
+```{r}
+edades_RGS_2020 <- edades_2020_ENT %>%
+  group_by(Rango_Edad, Sexo) %>%
+  count(Casos=n())%>%
+  mutate(Proporcion = (n/Casos)*100)%>%
+  select(-Casos)%>%
+  rename(Casos=n)
+
+reactable(edades_RGS_2020)
+```
+
+### Tibble Agrupado por Entidad Federativa, Sexo y Origen Indígena:
+
+```{r}
+edades_2020_OR <- edades_2020%>%
+  group_by(Entidad, Sexo, Origen)%>%
+    reframe(Casos = n())%>%
+  mutate(Proporcion = Casos/sum(Casos)*100)
+
+reactable(edades_2020_OR)
+```
+
+### Agrupación por Entidad Federativa, Sexo y Tipo de Discapacidad:
+
+```{r}
+edades_2020_DIS <- edades_2020%>%
+  group_by(Entidad, Sexo, Discapacidad)%>%
+    reframe(Casos = n())%>%
+  mutate(Proporcion = Casos/sum(Casos)*100)
+
+reactable(edades_2020_DIS)
+```

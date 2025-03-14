@@ -1,0 +1,36 @@
+---
+title: "Introducción"
+css: custom.css
+---
+
+# Bienvenida
+
+Estimada Asesora, el presente proyecto abarca un análisis exhaustivo de datos relacionados con los procesos electorales, las características de los representantes y su remuneración en el periodo comprendido entre **2015 y 2023**. A través de esta iniciativa, busco ofrecer los conjuntos de datos utilizados para analizar la dinámica política y social durante estos años clave para la **Partitocracia mexicana**, además de los script sobre los modelos de ***Machine Learning***. A continuación, se presentan los temas principales que componen este estudio:
+
+### Presentación de Base de Datos
+
+La base de datos utilizada en este análisis ha sido diseñada para recopilar y estructurar información clave sobre sufragios, representantes y otros indicadores relevantes. Esta herramienta constituye el pilar para explorar patrones, tendencias y correlaciones significativas.
+
+### Sufragios
+
+El análisis de los votos emitidos a nivel nacional proporciona una visión general sobre la participación ciudadana y su evolución en los últimos años. Este apartado incluye datos detallados sobre los resultados y su impacto en la composición de los cuerpos legislativos.
+
+### Sufragios Federales
+
+En este apartado se profundiza en los sufragios correspondientes a las elecciones federales, destacando las dinámicas específicas de las votaciones para la Cámara de Diputados y otras instancias nacionales clave.
+
+### Edades de Representantes
+
+Se examinan las características demográficas de los representantes electos, haciendo énfasis en las edades predominantes y su posible influencia en las decisiones legislativas.
+
+### Estudios de Representantes
+
+Este análisis explora los niveles educativos de los representantes, evaluando cómo las credenciales académicas se distribuyen entre los legisladores y qué tendencias se observan a lo largo del periodo.
+
+### Salarios de Representantes
+
+En este apartado se examinan las remuneraciones percibidas por los representantes, incluyendo su desglose por conceptos como salarios, asistencias legislativas y otras asignaciones.
+
+### Otros Datos
+
+Finalmente, se incluyen datos complementarios que enriquecen el análisis, como el desempeño legislativo, indicadores económicos y otros factores sociales relevantes.

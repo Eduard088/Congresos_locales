@@ -1,0 +1,4 @@
+"0","dipfed2021_1_f1 <- dipfed2021_2_f%>%"
+"0","inner_join(integrantes2021, by= ""Partido"") "
+"0",""
+"0","reactable(dipfed2021_1_f1)"

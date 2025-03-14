@@ -1,0 +1,3 @@
+"0","senfed2018 <- read_excel(""C:/Users/Eduardo/Documents/PC/SECCION1/DOCS/Tesis/FEDERAL/senado 2018.xlsx"")"
+"0",""
+"0","reactable(senfed2018)"

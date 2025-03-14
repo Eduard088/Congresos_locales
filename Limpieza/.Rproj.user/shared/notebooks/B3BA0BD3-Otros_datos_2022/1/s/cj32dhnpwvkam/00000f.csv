@@ -1,0 +1,7 @@
+"0","edades_2022 <- edades_2022 %>%"
+"0","  mutate("
+"0","    Tipo_1 = replace_na(Tipo_1, ""No aplica""),"
+"0","    Tipo_2 = replace_na(Tipo_2, ""No aplica""),"
+"0","    Tipo_3 = replace_na(Tipo_3, ""No aplica"")"
+"0","  )"
+"0",""

@@ -1,0 +1,2 @@
+"0","dipfed2015 <- dipfed2015 %>%"
+"0","gather(key = Partido, value= Votos, PAN:CAND_IND22)"
