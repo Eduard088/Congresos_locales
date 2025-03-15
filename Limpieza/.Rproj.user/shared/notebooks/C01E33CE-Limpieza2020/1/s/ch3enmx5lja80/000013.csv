@@ -1,2 +1,0 @@
-"0","ingresos_2020 <- read_excel(""C:/Users/Eduardo/Documents/PC/SECCION1/DOCS/Tesis/Ingresos/salario2020.xlsx"")"
-"0","reactable(ingresos_2020)"

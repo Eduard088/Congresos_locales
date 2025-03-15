@@ -1,8 +1,0 @@
-"0","edades_RGS_2020 <- edades_2020_ENT %>%"
-"0","  group_by(Rango_Edad, Sexo) %>%"
-"0","  count(Casos=n())%>%"
-"0","  mutate(Proporcion = (n/Casos)*100)%>%"
-"0","  select(-Casos)%>%"
-"0","  rename(Casos=n)"
-"0",""
-"0","reactable(edades_RGS_2020)"

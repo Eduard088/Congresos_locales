@@ -1,5 +1,0 @@
-"0","estudios_2019_PRE <- estudios_2019%>%"
-"0","  group_by(Partido, Rango_Estudios)%>%"
-"0","  reframe(Casos=sum(Casos), Proporcion=sum(Proporcion))"
-"0",""
-"0","reactable(estudios_2019_PRE)"

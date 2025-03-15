@@ -1,5 +1,0 @@
-"0","edades_2018 <- edades_2018%>%"
-"0","  select(-legedatt)%>%"
-"0","  gather(key = Rango_Edad, value = Casos, legeda1:legeda18)"
-"0",""
-"0","reactable(edades_2018)"

@@ -1,9 +1,0 @@
-"0","ingresos_2017 <- read_csv (""C:/Users/Eduardo/Documents/PC/SECCION1/DOCS/Tesis/Ingresos/ingresos_2017.csv"")"
-"2","[1mRows: [22m[34m384[39m [1mColumns: [22m[34m23[39m"
-"2","[36m──[39m [1mColumn specification[22m [36m───────────────────────────────────────────────────────────────────────────────[39m
-[1mDelimiter:[22m "",""
-[32mdbl[39m (23): entidad, gruparla, legingtt, leging1, leging2, leging3, leging4, leging5, leging6, leging..."
-"2","
-[36mℹ[39m Use `spec()` to retrieve the full column specification for this data.
-[36mℹ[39m Specify the column types or set `show_col_types = FALSE` to quiet this message."
-"0","reactable(ingresos_2017)"

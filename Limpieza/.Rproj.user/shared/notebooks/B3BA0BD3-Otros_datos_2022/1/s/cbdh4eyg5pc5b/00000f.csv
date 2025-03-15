@@ -1,6 +1,0 @@
-"0","Entidades_2022 <- edades_2022%>%"
-"0","  group_by(Entidad, Sexo, Lengua_Indigena, Pueblo_Indigena, Pertenencia)%>%"
-"0","  reframe(Casos=n())%>%"
-"0","  mutate(Proporcion = Casos/sum(Casos)*100)"
-"0",""
-"0","reactable(Entidades_2022)"

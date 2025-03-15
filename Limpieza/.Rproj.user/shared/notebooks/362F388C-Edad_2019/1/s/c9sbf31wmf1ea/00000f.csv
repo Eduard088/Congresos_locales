@@ -1,6 +1,0 @@
-"0","edades_2019_OR <- edades_2019%>%"
-"0","  group_by(Entidad, Sexo, Origen)%>%"
-"0","    reframe(Casos = n())%>%"
-"0","  mutate(Proporcion = Casos/sum(Casos)*100)"
-"0",""
-"0","reactable(edades_2019_OR)"

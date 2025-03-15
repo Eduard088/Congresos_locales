@@ -1,5 +1,0 @@
-"0","ingresos_2017<- ingresos_2017%>%"
-"0","select(-legingtt)%>%"
-"0","gather(key = Rango_Salarial, value= Casos, leging1:leging20)"
-"0",""
-"0","reactable(ingresos_2017)"

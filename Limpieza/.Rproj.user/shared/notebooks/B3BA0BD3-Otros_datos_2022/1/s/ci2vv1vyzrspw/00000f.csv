@@ -1,3 +1,0 @@
-"0","edades_2022 <- edades_2022 %>%"
-"0","  mutate(Pertenencia = replace_na(Pertenencia, 99))"
-"0",""

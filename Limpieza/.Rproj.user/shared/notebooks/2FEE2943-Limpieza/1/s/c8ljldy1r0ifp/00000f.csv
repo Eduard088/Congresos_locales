@@ -1,4 +1,0 @@
-"0","ingresos_2018_f <- ingresos_2018_f%>%"
-"0","  group_by(entidad, Sexo, Casos, Salario)%>%"
-"0","  reframe(Monto = Salario*Casos)%>%"
-"0","  mutate(Proporcion = Monto/sum(Monto)*100, sump=sum(Proporcion))"

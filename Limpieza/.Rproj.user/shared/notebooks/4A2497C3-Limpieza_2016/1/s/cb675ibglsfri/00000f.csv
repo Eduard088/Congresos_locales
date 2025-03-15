@@ -1,5 +1,0 @@
-"0","GP_2016_f <- GP_2016%>%"
-"0","  group_by(Partido)%>%"
-"0","  reframe(Monto = sum(Monto), Proporcion=sum(Proporcion))"
-"0",""
-"0","reactable(GP_2016_f)"

@@ -1,5 +1,0 @@
-"0","edades_2016_ENT <- edades_2016%>%"
-"0","  group_by(entidad, Rango_Edad, Edad_estimada)%>%"
-"0","  reframe(Casos = sum(Casos))"
-"0",""
-"0","reactable(edades_2016_ENT)"

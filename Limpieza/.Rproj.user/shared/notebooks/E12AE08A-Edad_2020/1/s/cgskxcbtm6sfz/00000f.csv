@@ -1,5 +1,0 @@
-"0","edades_2020_ENT <- edades_2020%>%"
-"0","  group_by(Entidad, Sexo)%>%"
-"0","  reframe(edades)"
-"0",""
-"0","reactable(edades_2020_ENT)"

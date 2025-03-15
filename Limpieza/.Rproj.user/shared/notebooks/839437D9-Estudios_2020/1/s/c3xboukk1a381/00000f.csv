@@ -1,5 +1,0 @@
-"0","estudios_2020_SREE <- estudios_2020 %>%"
-"0","  group_by(Sexo, Rango_Estudios, Estatus) %>%"
-"0","  reframe(Casos = sum(Casos, na.rm = TRUE), Proporcion = sum(Proporcion))"
-"0",""
-"0","reactable(estudios_2020_SREE)"

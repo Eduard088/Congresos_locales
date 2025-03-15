@@ -1,6 +1,0 @@
-"0","edades_RGS_2018 <- edades_2018%>%"
-"0","  group_by(Rango_Edad, Sexo, Edad_estimada)%>%"
-"0","  reframe(Casos=sum(Casos))%>%"
-"0","  mutate(Proporcion = Casos/sum(Casos)*100)"
-"0",""
-"0","reactable(edades_RGS_2018)"

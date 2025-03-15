@@ -1,4 +1,0 @@
-"0","edades_2018 <- edades_2018%>%"
-"0","  rename(Partido = grupopar)"
-"0",""
-"0","reactable(edades_2018)"

@@ -1,2 +1,0 @@
-"0","edades_2016  <- edades_2016 %>%"
-"0","  filter(Casos != ""NSS"")"

@@ -1,4 +1,0 @@
-"0","edades_2020  <- edades_2020%>%"
-"0","  filter(edades != ""NSS"")"
-"0",""
-"0","reactable(edades_2020)"

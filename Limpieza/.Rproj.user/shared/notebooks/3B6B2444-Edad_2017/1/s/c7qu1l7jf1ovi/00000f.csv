@@ -1,5 +1,0 @@
-"0","edades_2017_GPENT <- edades_2017%>%"
-"0","  group_by(entidad, Partido, Rango_Edad)%>%"
-"0","  reframe(Casos = sum(Casos))"
-"0",""
-"0","reactable(edades_2017_GPENT)"

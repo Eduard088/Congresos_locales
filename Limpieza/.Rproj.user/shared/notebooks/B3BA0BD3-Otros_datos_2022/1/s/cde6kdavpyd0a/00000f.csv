@@ -1,4 +1,0 @@
-"0","edades_2022_Diversidad_S%>%"
-"0","  filter(Diversidad_S == ""Sí"")%>%"
-"0","  group_by(Entidad, Sexo, Diversidad_S)%>%"
-"0","  reframe(Casos=sum(Casos), Proporcion=sum(Proporcion))"

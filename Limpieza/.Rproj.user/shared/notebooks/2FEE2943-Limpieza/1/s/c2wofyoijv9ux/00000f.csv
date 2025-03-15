@@ -1,5 +1,0 @@
-"0","ingresos_2018_f <- ingresos_2018%>%"
-"0","  group_by(entidad, Sexo, Rango_Salarial, Salario)%>%"
-"0","  reframe(Casos = sum(Casos))"
-"0",""
-"0","reactable(ingresos_2018_f)"

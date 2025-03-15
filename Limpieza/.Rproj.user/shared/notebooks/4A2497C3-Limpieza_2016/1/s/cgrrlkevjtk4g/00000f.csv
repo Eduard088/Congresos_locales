@@ -1,4 +1,0 @@
-"0","GP_2016 <- GP_2016%>%"
-"0","rename(Partido = gru_parl)"
-"0",""
-"0","reactable(GP_2016)"

@@ -1,5 +1,0 @@
-"0","edades_2022 <- edades_2022%>%"
-"0","  select(entidad_federativa, sexo_inclusivo, preg_salto_1, preg_salto_2, pueblos_indigenas, preg_salto_3, condicion_discapacidad_1, condicion_discapacidad_2, condicion_discapacidad_3, preg_salto_4, empleo_anterior, antiguedad_1, antiguedad_2)%>%"
-"0","  rename(Entidad= entidad_federativa, Sexo = sexo_inclusivo, Lengua_Indigena= preg_salto_1, Pueblo_Indigena= preg_salto_2, Pertenencia = pueblos_indigenas, Discapacidad = preg_salto_3, Tipo_1= condicion_discapacidad_1, Tipo_2 = condicion_discapacidad_2, Tipo_3 = condicion_discapacidad_3, Diversidad_S = preg_salto_4, Empleo_Anterior = empleo_anterior, Antiguedad_SP = antiguedad_1, Antiguedad_LEG = antiguedad_2)"
-"0",""
-"0","reactable(edades_2022)"

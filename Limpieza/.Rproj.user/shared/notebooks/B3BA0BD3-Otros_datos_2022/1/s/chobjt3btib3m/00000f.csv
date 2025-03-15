@@ -1,6 +1,0 @@
-"0","edades_2022_EMP <- edades_2022%>%"
-"0","  group_by(Entidad, Sexo, Empleo_Anterior)%>%"
-"0","  reframe(Casos=n())%>%"
-"0","  mutate(Proporcion = Casos/sum(Casos)*100)"
-"0",""
-"0","reactable(edades_2022_EMP)"

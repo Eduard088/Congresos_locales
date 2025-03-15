@@ -1,6 +1,0 @@
-"0","GP_2016 <- ingresos_2016%>%"
-"0","  group_by(gru_parl, Rango_Salarial, Salario)%>%"
-"0","  reframe(Casos = sum(Casos))%>%"
-"0","  mutate(Monto = Salario*Casos, Proporcion=Monto/sum(Monto)*100)"
-"0",""
-"0","reactable(GP_2016)"
